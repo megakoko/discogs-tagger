@@ -1,22 +1,30 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#pragma once
+
 
 #include <QMainWindow>
+#include <QStringList>
 
-namespace Ui {
-    class MainWindow;
-}
+#include "ui_mainwindow.h"
 
-class MainWindow : public QMainWindow
+class TrackModel;
+class QDir;
+
+
+class MainWindow : public QMainWindow, Ui_MainWindow
 {
     Q_OBJECT
 
 public:
     explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+
+private slots:
+    void addFiles();
 
 private:
-    Ui::MainWindow *ui;
-};
+	void init();
+	void initConnections();
 
-#endif // MAINWINDOW_H
+	void findFiles(const QDir& dir, QStringList& files);
+
+	TrackModel* m_model;
+};

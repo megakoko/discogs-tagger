@@ -4,15 +4,19 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT		+= core gui
 
-TARGET = discogs-tagger
-TEMPLATE = app
+TARGET	= discogs-tagger
+TEMPLATE= app
 
 
-SOURCES += main.cpp\
-        mainwindow.cpp
+SOURCES	+= main.cpp\
+			mainwindow.cpp \
+			trackmodel.cpp
 
-HEADERS  += mainwindow.h
+HEADERS	+= mainwindow.h \
+			trackmodel.h
 
-FORMS    += mainwindow.ui
+FORMS	+= mainwindow.ui
+
+LIBS	+= -ltag
