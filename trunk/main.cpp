@@ -7,7 +7,8 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
+    a.setApplicationName("Discogs Tagger");
+	MainWindow w;
     w.show();
 
 
