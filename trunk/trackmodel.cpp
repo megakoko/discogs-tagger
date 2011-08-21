@@ -3,8 +3,10 @@
 #include <QDebug>
 #include <QSize>
 #include <QBrush>
+#include <QApplication>
+#include <QFontMetrics>
 
-#include <taglib/fileref.h>
+//#include <taglib/fileref.h>
 #include <taglib/tag.h>
 #include <taglib/tstring.h>
 
@@ -41,13 +43,46 @@ void TrackModel::addTracks(const QStringList &filenames)
 }
 
 
-void TrackModel::saveTracks() const
+bool TrackModel::saveTracks() const
 {
-	// TODO: Check if we can save file.
+	bool result = true;
+
 	for(int i = 0; i < m_tracks.size(); ++i)
-		m_tracks[i]->save();
+	{
+		bool success = m_tracks[i]->save();
+		if(success)
+			TagLib::Tag::duplicate(m_tracks[i]->tag(), m_tracksOriginal[i]->tag());
+		else
+			result = false;
+	}
+	return result;
 }
 
+
+void TrackModel::importTags(const QList<Track> &tracks, const QString &album,
+							const QString &genre, const int year)
+{
+	const int maxIndex = qMin(tracks.count(), m_tracks.count());
+	for(int i = 0; i < maxIndex; ++i)
+	{
+		TagLib::Tag* tag = m_tracks[i]->tag();
+		tag->setAlbum(album.toStdString());
+		tag->setTitle(tracks[i].title.toStdString());
+		tag->setArtist(tracks[i].artist.toStdString());
+		tag->setGenre(genre.toStdString());
+		tag->setYear(year);
+		tag->setTrack(i+1);
+//		TagLib::Tag::duplicate(tag, m_tracksOriginal[i]->tag());
+	}
+}
+
+
+void TrackModel::clear()
+{
+	beginResetModel();
+	m_tracks.clear();
+	endResetModel();
+}
 
 
 int TrackModel::columnCount(const QModelIndex &) const
@@ -67,26 +102,23 @@ QVariant TrackModel::data(const QModelIndex &index, int role) const
 	Q_ASSERT(m_tracks.count() > index.row());
 
 	const int row = index.row();
-//	const int col = index.column();
+	const int col = index.column();
 
 
 	QColor diffColor(Qt::red);
 
 	switch(role)
 	{
-//	case Qt::SizeHintRole:
-//		if(index.column() == colTrack || index.column() == colYear)
-//		{
-//			const int spinWidth = 70;
-//			QSize s = headerData(index.column(), Qt::Horizontal, role).toSize();
-//			s.setWidth(s.width() + spinWidth);
-//			s.setHeight(1);
-//			qDebug() << index.column() << s;
-//			return s;
-//		}
-//		break;
+	case Qt::SizeHintRole:
+		if(col == colTrack || col == colYear)
+		{
+			const int spinWidth = 40;
+			const int textWidth = qApp->fontMetrics().width(data(index).toString());
+			return QSize(textWidth + spinWidth, 0);
+		}
+		break;
 	case Qt::ForegroundRole:
-		switch(index.column())
+		switch(col)
 		{
 		case colTrack:
 			if(m_tracks[row]->tag()->track() == m_tracksOriginal[row]->tag()->track())
@@ -118,7 +150,7 @@ QVariant TrackModel::data(const QModelIndex &index, int role) const
 		break;
 	case Qt::DisplayRole:
 	case Qt::EditRole:
-		switch(index.column())
+		switch(col)
 		{
 		case colTrack:
 			return m_tracks[row]->tag()->track();
@@ -137,50 +169,47 @@ QVariant TrackModel::data(const QModelIndex &index, int role) const
 
 	case Qt::ToolTipRole:
 	{
-		QString toolTip = "<b>%1</b><br />%2";
+		QString toolTip = tr("Original value:") + "\n%1";
 		TagLib::FileName filename = m_tracks[row]->file()->name();
 
-		switch(index.column())
+		// TODO: we don't need no file name here.
+		switch(col)
 		{
 		case colTrack:
 			if(m_tracks[row]->tag()->track() == m_tracksOriginal[row]->tag()->track())
 				return QVariant();
-			return toolTip.arg(m_tracksOriginal[row]->tag()->track()).arg(filename);
+			return toolTip.arg(m_tracksOriginal[row]->tag()->track());
 		case colTitle:
 			if(m_tracks[row]->tag()->title() == m_tracksOriginal[row]->tag()->title())
 				return QVariant();
-			return toolTip.arg(TStringToQString(m_tracksOriginal[row]->tag()->title())).arg(filename);
+			return toolTip.arg(TStringToQString(m_tracksOriginal[row]->tag()->title()));
 		case colArtist:
 			if(m_tracks[row]->tag()->artist() == m_tracksOriginal[row]->tag()->artist())
 				return QVariant();
-			return toolTip.arg(TStringToQString(m_tracksOriginal[row]->tag()->artist())).arg(filename);
+			return toolTip.arg(TStringToQString(m_tracksOriginal[row]->tag()->artist()));
 		case colAlbum:
 			if(m_tracks[row]->tag()->album() == m_tracksOriginal[row]->tag()->album())
 				return QVariant();
-			return toolTip.arg(TStringToQString(m_tracksOriginal[row]->tag()->album())).arg(filename);
+			return toolTip.arg(TStringToQString(m_tracksOriginal[row]->tag()->album()));
 		case colGenre:
 			if(m_tracks[row]->tag()->genre() == m_tracksOriginal[row]->tag()->genre())
 				return QVariant();
-			return toolTip.arg(TStringToQString(m_tracksOriginal[row]->tag()->genre())).arg(filename);
+			return toolTip.arg(TStringToQString(m_tracksOriginal[row]->tag()->genre()));
 		case colYear:
 			if(m_tracks[row]->tag()->year() == m_tracksOriginal[row]->tag()->year())
 				return QVariant();
-			return toolTip.arg(m_tracksOriginal[row]->tag()->year()).arg(filename);
+			return toolTip.arg(m_tracksOriginal[row]->tag()->year());
 		}
 		break;
 	}	// case Qt::ToolTipRole END
 
 	}	// switch END
 	return QVariant();
-
 }
 
 
 QVariant TrackModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-	if(role == Qt::SizeHintRole)
-		qDebug() << QAbstractTableModel::headerData(section, orientation, role);
-
 	if(orientation == Qt::Vertical || role != Qt::DisplayRole)
 		return QAbstractTableModel::headerData(section, orientation, role);
 

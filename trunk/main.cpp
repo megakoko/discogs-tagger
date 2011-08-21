@@ -1,8 +1,7 @@
 #include <QtGui/QApplication>
 #include "mainwindow.h"
-#include <QTreeView>
-#include <QStandardItemModel>
-#include <QList>
+
+#include "discogsviewer.h"
 
 int main(int argc, char *argv[])
 {
@@ -10,7 +9,6 @@ int main(int argc, char *argv[])
     a.setApplicationName("Discogs Tagger");
 	MainWindow w;
     w.show();
-
 
     return a.exec();
 }
