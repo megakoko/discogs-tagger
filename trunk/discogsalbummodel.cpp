@@ -43,7 +43,6 @@ void DiscogsAlbumModel::setAlbum(const QString& discogsResponse)
 
 		QDomElement artists = track.firstChildElement("artists");
 		m_tracks << Track(track.firstChildElement("position").text(),
-//						  trackArtists(track).join(joinText),
 						  trackArtists(artists).join(joinText),
 						  track.firstChildElement("title").text());
 	}

@@ -21,8 +21,6 @@ DiscogsViewer::DiscogsViewer(QWidget *parent)
     setupUi(this);
 
 	splitter->setCollapsible(1, false);
-	m_albumTable->verticalHeader()->setResizeMode(QHeaderView::Fixed);
-
 
 	// Setting up models.
 	m_listModel = new DiscogsAlbumListModel(this);
@@ -30,6 +28,8 @@ DiscogsViewer::DiscogsViewer(QWidget *parent)
 
 	m_tableModel = new DiscogsAlbumModel(this);
 	m_albumTable->setModel(m_tableModel);
+	m_albumTable->verticalHeader()->setResizeMode(QHeaderView::Fixed);
+	m_albumTable->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
 
     manager = new QNetworkAccessManager(this);
 
@@ -38,12 +38,6 @@ DiscogsViewer::DiscogsViewer(QWidget *parent)
 			SLOT(replyFinished(QNetworkReply*)));
 	connect(m_albumList, SIGNAL(activated(QModelIndex)),
 			SLOT(albumDoubleClicked(QModelIndex)));
-
-//	connect(m_up, SIGNAL(clicked()), SLOT(movUp()));
-//	connect(m_down, SIGNAL(clicked()), SLOT(moveDown()));
-//	connect(m_join, SIGNAL(clicked()), SLOT(joinClicked()));
-
-	m_albumTable->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
 }
 
 
@@ -53,11 +47,11 @@ const DiscogsAlbumModel* DiscogsViewer::albumModel() const
 }
 
 
-
 void DiscogsViewer::restoreState(const QByteArray& state)
 {
 	splitter->restoreState(state);
 }
+
 
 QByteArray DiscogsViewer::saveState() const
 {
@@ -78,13 +72,6 @@ void DiscogsViewer::search(const QString& input)
 		loadAlbum(releaseNumber);
 	else
 		loadAlbumList(text.replace(' ', '+'));
-}
-
-
-void DiscogsViewer::setSearchString(const QString &text)
-{
-	Q_UNUSED(text);
-//	m_searchLine->setText(text);
 }
 
 
@@ -136,7 +123,7 @@ void DiscogsViewer::replyFinished(QNetworkReply *reply)
     }
     else
     {
-        // handle errors here
+        // TODO: handle errors here
         qDebug() << "error";
     }
 }

@@ -21,7 +21,6 @@ public:
     explicit DiscogsViewer(QWidget *parent = 0);
 	const DiscogsAlbumModel* albumModel() const;
 
-	void setSearchString(const QString& text);
 	void search(const QString& input);
 
 	void restoreState(const QByteArray& state);
@@ -34,12 +33,8 @@ public slots:
 	void remove();
 
 private slots:
-
     void replyFinished(QNetworkReply*);
-
-
 	void albumDoubleClicked(const QModelIndex& index);
-
 
 private:
 
@@ -59,7 +54,6 @@ private:
 	static const QString albumRequest;
 
 signals:
-	void importClicked();
 	void statusChanged(const QString& status = QString::null);
 
 };

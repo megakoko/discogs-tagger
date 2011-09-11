@@ -40,6 +40,8 @@ private:
 	void findFiles(const QDir& dir, QStringList& files);
 	void updateTable();
 
+	static QString actionShortcutToString(const QAction* action);
+
 	// Start directory for 'Open Directory' or 'Open File' dialog.
 	QString m_startDir;
 
