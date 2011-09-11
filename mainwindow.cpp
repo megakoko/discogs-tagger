@@ -6,6 +6,8 @@
 #include <QSettings>
 #include <QLineEdit>
 #include <QToolButton>
+#include <QDesktopServices>
+#include <QUrl>
 
 #include "trackmodel.h"
 #include "discogsalbummodel.h"
@@ -53,6 +55,11 @@ void MainWindow::init()
 	m_mainTable->setModel(m_model);
 	m_mainTable->horizontalHeader()->setMovable(true);
 	updateTable();
+
+	QAction* action = new QAction(this);
+	action->setShortcut(Qt::Key_F1);
+	connect(action, SIGNAL(triggered()), SLOT(help()));
+	addAction(action);
 
 	m_startDir = m_settings.value(OptionsNames::startDir).toString();
 //	m_mainTable->horizontalHeader()->restoreState(
@@ -263,4 +270,10 @@ QString MainWindow::actionShortcutToString(const QAction* action)
 		return QString::null;
 
 	return " (" + action->shortcut().toString(QKeySequence::NativeText) + ")";
+}
+
+
+void MainWindow::help()
+{
+	QDesktopServices::openUrl(QUrl("http://code.google.com/p/discogs-tagger/"));
 }

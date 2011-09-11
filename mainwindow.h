@@ -32,6 +32,8 @@ private slots:
 
 	void save();
 
+	void help();
+
 
 private:
 	void init();
