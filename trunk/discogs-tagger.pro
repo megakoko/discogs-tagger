@@ -30,3 +30,6 @@ FORMS	+= mainwindow.ui \
 			discogsviewer.ui
 
 LIBS	+= -ltag
+
+RESOURCES += \
+    resources.qrc

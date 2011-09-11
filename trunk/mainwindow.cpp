@@ -70,43 +70,61 @@ void MainWindow::initConnections()
 {
 	QAction* action;
 
+	m_toolBar->setMaximumHeight(30);
 
 	// Files View actions.
-	action = m_toolBar->addAction(tr("Go to &&Discogs View"), this, SLOT(goToDiscogsPage()));
+	action = m_toolBar->addAction(QIcon(":/icons/right"), tr("Go to Discogs View"), this, SLOT(goToDiscogsPage()));
+	action->setStatusTip(tr("Move to the Discogs View"));
 	action->setShortcut(Qt::CTRL | Qt::Key_Tab);
 	m_filesActions << action;
 
-	action = m_toolBar->addAction(tr("&&Add files"), this, SLOT(addFiles()));
+	action = m_toolBar->addAction(QIcon(":/icons/add"), tr("Add files"), this, SLOT(addFiles()));
 	action->setStatusTip(tr("Open a dialog to find some audio tracks to add."));
 	action->setShortcut(Qt::CTRL | Qt::Key_A);
 	m_filesActions << action;
 
-	action = m_toolBar->addAction(tr("&&Clear"), m_model, SLOT(clear()));
+	action = m_toolBar->addAction(QIcon(":/icons/remove"), tr("Clear"), m_model, SLOT(clear()));
+	action->setStatusTip(tr("Clear track list"));
+	action->setShortcut(Qt::CTRL | Qt::Key_C);
 	m_filesActions << action;
 
-	action = m_toolBar->addAction(tr("&&Save"), this, SLOT(save()));
+	action = m_toolBar->addAction(QIcon(":/icons/save"), tr("Save"), this, SLOT(save()));
+	action->setStatusTip(tr("Save changes"));
+	action->setShortcut(Qt::CTRL | Qt::Key_S);
 	m_filesActions << action;
 
 
 	// Discogs View actions.
-	action = m_toolBar->addAction(tr("Go to &&Files View"), this, SLOT(goToFilesPage()));
+	action = m_toolBar->addAction(QIcon(":/icons/left"), tr("Go to Files View"), this, SLOT(goToFilesPage()));
+	action->setStatusTip(tr("Move to the Files View"));
 	action->setShortcut(Qt::CTRL | Qt::SHIFT | Qt::Key_Tab);
 	m_discogsActions << action;
 
-	action = m_toolBar->addAction(tr("&&Import tags"), this, SLOT(importDiscogsTagsToModel()));
+	action = m_toolBar->addAction(QIcon(":/icons/import"), tr("Import tags"), this, SLOT(importDiscogsTagsToModel()));
+	action->setStatusTip(tr("Import discogs tags to opened files"));
+	action->setShortcut(Qt::CTRL | Qt::Key_I);
 	m_discogsActions << action;
 
-	action = m_toolBar->addAction(tr("Move &&up"), m_discogsViewer, SLOT(moveUp()));
+	action = m_toolBar->addAction(QIcon(":/icons/up"), QString::null, m_discogsViewer, SLOT(moveUp()));
+	action->setStatusTip(tr("Move track up"));
+	action->setShortcut(Qt::CTRL | Qt::Key_U);
 	m_discogsActions << action;
 
-	action = m_toolBar->addAction(tr("Move &&down"), m_discogsViewer, SLOT(moveDown()));
+	action = m_toolBar->addAction(QIcon(":/icons/down"), QString::null, m_discogsViewer, SLOT(moveDown()));
+	action->setStatusTip(tr("Move track down"));
+	action->setShortcut(Qt::CTRL | Qt::Key_D);
 	m_discogsActions << action;
 
-	action = m_toolBar->addAction(tr("&&Remove"), m_discogsViewer, SLOT(remove()));
+	action = m_toolBar->addAction(QIcon(":/icons/remove"), QString::null, m_discogsViewer, SLOT(remove()));
+	action->setStatusTip(tr("Remove track"));
+	action->setShortcut(Qt::Key_Delete);
 	m_discogsActions << action;
 
-	action = m_toolBar->addAction(tr("&&Join"), m_discogsViewer, SLOT(join()));
+	/*
+	action = m_toolBar->addAction(QIcon(":/icons/add"), QString::null, m_discogsViewer, SLOT(join()));
+	action->setStatusTip(tr("Join tracks"));
 	m_discogsActions << action;
+	*/
 
 
 	// Hack to add a spacer to QToolBar.

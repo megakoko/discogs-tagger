@@ -83,6 +83,7 @@ void DiscogsViewer::search(const QString& input)
 
 void DiscogsViewer::setSearchString(const QString &text)
 {
+	Q_UNUSED(text);
 //	m_searchLine->setText(text);
 }
 
@@ -180,5 +181,8 @@ void DiscogsViewer::join()
 
 void DiscogsViewer::remove()
 {
-	qDebug() << __FUNCTION__;
+	if(m_albumTable->selectionModel()->selectedRows(0).size() != 1)
+		return;
+	else
+		m_tableModel->removeItem(m_albumTable->selectionModel()->currentIndex());
 }
