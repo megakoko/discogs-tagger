@@ -100,7 +100,7 @@ void DiscogsViewer::replyFinished(QNetworkReply *reply)
     if(reply->error() == QNetworkReply::NoError)
     {
         QByteArray bytes = reply->readAll();
-        QString string(bytes);
+        QString string(QString::fromUtf8(bytes));
 
 
 		QDomDocument doc;
