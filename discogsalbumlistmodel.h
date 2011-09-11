@@ -14,9 +14,6 @@ public:
 
 	static int releaseNumberFromUrl(const QString& url);
 	static const int NO_RELEASE_NUMBER;
-signals:
-
-public slots:
 
 private:
 	struct Album {

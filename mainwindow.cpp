@@ -49,9 +49,6 @@ void MainWindow::init()
 	m_discogsViewer = new DiscogsViewer(this);
 
 	m_stackedWidget->addWidget(m_discogsViewer);
-	QList<QTabBar*> tabList = findChildren<QTabBar*>();
-	if(!tabList.isEmpty())
-		tabList[0]->setCurrentIndex(0);
 
 	m_mainTable->setModel(m_model);
 	m_mainTable->horizontalHeader()->setMovable(true);
@@ -74,55 +71,55 @@ void MainWindow::initConnections()
 
 	// Files View actions.
 	action = m_toolBar->addAction(QIcon(":/icons/right"), tr("Go to Discogs View"), this, SLOT(goToDiscogsPage()));
-	action->setStatusTip(tr("Move to the Discogs View"));
 	action->setShortcut(Qt::CTRL | Qt::Key_Tab);
+	action->setStatusTip(tr("Move to the Discogs View") + actionShortcutToString(action));
 	m_filesActions << action;
 
 	action = m_toolBar->addAction(QIcon(":/icons/add"), tr("Add files"), this, SLOT(addFiles()));
-	action->setStatusTip(tr("Open a dialog to find some audio tracks to add"));
 	action->setShortcut(Qt::CTRL | Qt::Key_A);
+	action->setStatusTip(tr("Open a dialog to find some audio tracks to add") + actionShortcutToString(action));
 	m_filesActions << action;
 
 	action = m_toolBar->addAction(QIcon(":/icons/remove"), tr("Clear"), m_model, SLOT(clear()));
-	action->setStatusTip(tr("Clear track list"));
 	action->setShortcut(Qt::CTRL | Qt::Key_C);
+	action->setStatusTip(tr("Clear track list") + actionShortcutToString(action));
 	m_filesActions << action;
 
 	action = m_toolBar->addAction(QIcon(":/icons/save"), tr("Save"), this, SLOT(save()));
-	action->setStatusTip(tr("Save changes"));
 	action->setShortcut(Qt::CTRL | Qt::Key_S);
+	action->setStatusTip(tr("Save changes") + actionShortcutToString(action));
 	m_filesActions << action;
 
 
 	// Discogs View actions.
 	action = m_toolBar->addAction(QIcon(":/icons/left"), tr("Go to Files View"), this, SLOT(goToFilesPage()));
-	action->setStatusTip(tr("Move to the Files View"));
 	action->setShortcut(Qt::CTRL | Qt::SHIFT | Qt::Key_Tab);
+	action->setStatusTip(tr("Move to the Files View") + actionShortcutToString(action));
 	m_discogsActions << action;
 
 	action = m_toolBar->addAction(QIcon(":/icons/import"), tr("Import tags"), this, SLOT(importDiscogsTagsToModel()));
-	action->setStatusTip(tr("Import discogs tags to opened files"));
 	action->setShortcut(Qt::CTRL | Qt::Key_I);
+	action->setStatusTip(tr("Import discogs tags to opened files") + actionShortcutToString(action));
 	m_discogsActions << action;
 
 	action = m_toolBar->addAction(QIcon(":/icons/up"), QString::null, m_discogsViewer, SLOT(moveUp()));
-	action->setStatusTip(tr("Move track up"));
 	action->setShortcut(Qt::CTRL | Qt::Key_U);
+	action->setStatusTip(tr("Move track up") + actionShortcutToString(action));
 	m_discogsActions << action;
 
 	action = m_toolBar->addAction(QIcon(":/icons/down"), QString::null, m_discogsViewer, SLOT(moveDown()));
-	action->setStatusTip(tr("Move track down"));
 	action->setShortcut(Qt::CTRL | Qt::Key_D);
+	action->setStatusTip(tr("Move track down") + actionShortcutToString(action));
 	m_discogsActions << action;
 
 	action = m_toolBar->addAction(QIcon(":/icons/remove"), QString::null, m_discogsViewer, SLOT(remove()));
-	action->setStatusTip(tr("Remove track"));
 	action->setShortcut(Qt::Key_Delete);
+	action->setStatusTip(tr("Remove track") + actionShortcutToString(action));
 	m_discogsActions << action;
 
 	/*
 	action = m_toolBar->addAction(QIcon(":/icons/add"), QString::null, m_discogsViewer, SLOT(join()));
-	action->setStatusTip(tr("Join tracks"));
+	action->setStatusTip(tr("Join tracks") + actionShortcutToString(action));
 	m_discogsActions << action;
 	*/
 
@@ -256,4 +253,14 @@ void MainWindow::save()
 {
 	if(!m_model->saveTracks())
 		m_statusBar->showMessage(tr("Some of the tracks were not saved"), 5000);
+}
+
+
+
+QString MainWindow::actionShortcutToString(const QAction* action)
+{
+	if(action->shortcut().isEmpty())
+		return QString::null;
+
+	return " (" + action->shortcut().toString(QKeySequence::NativeText) + ")";
 }
