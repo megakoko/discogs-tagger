@@ -70,7 +70,7 @@ const QString& DiscogsAlbumModel::genre() const
 }
 
 
-const int DiscogsAlbumModel::year() const
+int DiscogsAlbumModel::year() const
 {
 	return m_year;
 }
@@ -119,13 +119,13 @@ QVariant DiscogsAlbumModel::headerData(int section, Qt::Orientation orientation,
 }
 
 
-int DiscogsAlbumModel::rowCount(const QModelIndex &parent) const
+int DiscogsAlbumModel::rowCount(const QModelIndex &) const
 {
 	return m_tracks.size();
 }
 
 
-int DiscogsAlbumModel::columnCount(const QModelIndex &parent) const
+int DiscogsAlbumModel::columnCount(const QModelIndex &) const
 {
 	return 3;
 }
@@ -158,8 +158,23 @@ void DiscogsAlbumModel::moveDown(const QModelIndex& item)
 }
 
 
+void DiscogsAlbumModel::removeItem(const QModelIndex &index)
+{
+	if(!index.isValid())
+		return;
+
+	const int row = index.row();
+
+	beginRemoveRows(index.parent(), row, row);
+	m_tracks.removeAt(row);
+	endRemoveRows();
+}
+
+
 void DiscogsAlbumModel::joinItems(const QModelIndex& from, const QModelIndex& to)
 {
+	Q_UNUSED(from);
+	Q_UNUSED(to);
 // TODO.
 }
 

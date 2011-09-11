@@ -43,10 +43,11 @@ void TrackModel::addTracks(const QStringList &filenames)
 }
 
 
-bool TrackModel::saveTracks() const
+bool TrackModel::saveTracks()
 {
 	bool result = true;
 
+	beginResetModel();
 	for(int i = 0; i < m_tracks.size(); ++i)
 	{
 		bool success = m_tracks[i]->save();
@@ -55,6 +56,7 @@ bool TrackModel::saveTracks() const
 		else
 			result = false;
 	}
+	endResetModel();
 	return result;
 }
 
@@ -81,6 +83,7 @@ void TrackModel::clear()
 {
 	beginResetModel();
 	m_tracks.clear();
+	m_tracksOriginal.clear();
 	endResetModel();
 }
 
@@ -170,7 +173,7 @@ QVariant TrackModel::data(const QModelIndex &index, int role) const
 	case Qt::ToolTipRole:
 	{
 		QString toolTip = tr("Original value:") + "\n%1";
-		TagLib::FileName filename = m_tracks[row]->file()->name();
+//		TagLib::FileName filename = m_tracks[row]->file()->name();
 
 		// TODO: we don't need no file name here.
 		switch(col)

@@ -1,7 +1,6 @@
 #include <QtGui/QApplication>
 #include "mainwindow.h"
 
-#include "discogsviewer.h"
 
 int main(int argc, char *argv[])
 {

@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file alias="save">faenza-icons/dialog-ok.png</file>
+        <file alias="search">faenza-icons/edit-find.png</file>
+        <file alias="down">faenza-icons/go-down.png</file>
+        <file alias="right">faenza-icons/go-next.png</file>
+        <file alias="left">faenza-icons/go-previous.png</file>
+        <file alias="up">faenza-icons/go-up.png</file>
+        <file alias="add">faenza-icons/list-add.png</file>
+        <file alias="import">faenza-icons/media-import-audio-cd.png</file>
+        <file alias="preferences">faenza-icons/system-run.png</file>
+        <file alias="remove">faenza-icons/window-close.png</file>
+    </qresource>
+</RCC>

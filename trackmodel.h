@@ -45,7 +45,7 @@ signals:
 
 public slots:
 	// We probably need two QModelIndex arguments here.
-	bool saveTracks() const;
+	bool saveTracks();
 
 	void clear();
 

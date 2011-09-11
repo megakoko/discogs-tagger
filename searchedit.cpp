@@ -12,10 +12,10 @@ SearchEdit::SearchEdit(QWidget *parent)
     : QLineEdit(parent)
 {
     clearButton = new QToolButton(this);
-    QPixmap pixmap("fileclose.png");
-	clearButton->setText("O-");
-    clearButton->setIcon(QIcon(pixmap));
-    clearButton->setIconSize(pixmap.size());
+
+	clearButton->setIcon(QIcon(":/icons/search"));
+//	clearButton->setIcon(QIcon("faenza-icons/zoom-fit.png"));
+
     clearButton->setCursor(Qt::ArrowCursor);
     clearButton->setStyleSheet("QToolButton { border: none; padding: 0px; }");
     clearButton->show();

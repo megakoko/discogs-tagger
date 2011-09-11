@@ -54,6 +54,9 @@
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
           <widget class="QTableView" name="m_albumTable">
+           <property name="tabKeyNavigation">
+            <bool>false</bool>
+           </property>
            <property name="selectionMode">
             <enum>QAbstractItemView::ContiguousSelection</enum>
            </property>

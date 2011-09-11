@@ -15,7 +15,7 @@ public:
 	void setAlbum(const QString& discogsResponse);
 	QList<Track> trackList() const;
 	const QString& album() const;
-	const int year() const;
+	int year() const;
 	const QString& genre() const;
 
 	QVariant data(const QModelIndex& index, int role) const;
@@ -28,6 +28,7 @@ public:
 public slots:
 	void moveUp(const QModelIndex& item);
 	void moveDown(const QModelIndex& item);
+	void removeItem(const QModelIndex& item);
 	void joinItems(const QModelIndex& from, const QModelIndex& to);
 
 
