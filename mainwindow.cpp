@@ -8,6 +8,8 @@
 #include <QToolButton>
 #include <QDesktopServices>
 #include <QUrl>
+#include <QDragEnterEvent>
+#include <QDropEvent>
 
 #include "trackmodel.h"
 #include "discogsalbummodel.h"
@@ -24,13 +26,15 @@ static const QString discogsState = "Discogs view state";
 
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
+	: QMainWindow(parent)
 	, m_settings("discogs-tagger")
 {
-    setupUi(this);
+	setupUi(this);
 
 	init();
 	initConnections();
+
+	setAcceptDrops(true);
 }
 
 
@@ -46,7 +50,7 @@ MainWindow::~MainWindow()
 
 
 void MainWindow::init()
-{	
+{
 	m_model = new TrackModel(this);
 	m_discogsViewer = new DiscogsViewer(this);
 
@@ -124,11 +128,11 @@ void MainWindow::initConnections()
 	action->setStatusTip(tr("Remove track") + actionShortcutToString(action));
 	m_discogsActions << action;
 
-	/*
+
 	action = m_toolBar->addAction(QIcon(":/icons/add"), QString::null, m_discogsViewer, SLOT(join()));
 	action->setStatusTip(tr("Join tracks") + actionShortcutToString(action));
 	m_discogsActions << action;
-	*/
+
 
 
 	// Hack to add a spacer to QToolBar.
@@ -179,7 +183,7 @@ void MainWindow::updateTable()
 
 void MainWindow::addFiles()
 {
-    const QString dirname =
+	const QString dirname =
 		QFileDialog::getExistingDirectory(this, tr("Choose search directory"), m_startDir);
 	if(dirname.isNull())
 		return;
@@ -276,4 +280,29 @@ QString MainWindow::actionShortcutToString(const QAction* action)
 void MainWindow::help()
 {
 	QDesktopServices::openUrl(QUrl("http://code.google.com/p/discogs-tagger/"));
+}
+
+
+void MainWindow::dragEnterEvent(QDragEnterEvent *event)
+{
+	if(event->mimeData()->hasUrls())
+		event->acceptProposedAction();
+}
+
+
+void MainWindow::dropEvent(QDropEvent *event)
+{
+	QStringList files;
+	foreach(const QUrl& url, event->mimeData()->urls())
+	{
+		QFileInfo info(url.toString().remove("file://"));
+
+		if(info.isDir())
+			findFiles(QDir(info.filePath()), files);
+		else if(info.suffix().toLower() == "mp3")
+			files << info.filePath();
+	}
+
+	m_model->addTracks(files);
+	updateTable();
 }

@@ -14,14 +14,18 @@ class DiscogsViewer;
 
 class MainWindow : public QMainWindow, Ui_MainWindow
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
+	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();
 
+protected:
+	void dragEnterEvent(QDragEnterEvent *);
+	void dropEvent(QDropEvent *);
+
 private slots:
-    void addFiles();
+	void addFiles();
 	void importDiscogsTagsToModel();
 	void currentPageChanged(const int index);
 

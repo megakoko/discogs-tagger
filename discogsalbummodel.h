@@ -8,9 +8,9 @@ class QDomElement;
 
 class DiscogsAlbumModel : public QAbstractTableModel
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    explicit DiscogsAlbumModel(QObject* parent = 0);
+	explicit DiscogsAlbumModel(QObject* parent = 0);
 
 	void setAlbum(const QString& discogsResponse);
 	QList<Track> trackList() const;
@@ -29,7 +29,7 @@ public slots:
 	void moveUp(const QModelIndex& item);
 	void moveDown(const QModelIndex& item);
 	void removeItem(const QModelIndex& item);
-	void joinItems(const QModelIndex& from, const QModelIndex& to);
+	void joinItems(const QModelIndexList& list);
 
 
 private:

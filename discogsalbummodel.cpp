@@ -19,8 +19,8 @@ void DiscogsAlbumModel::setAlbum(const QString& discogsResponse)
 {
 	m_tracks.clear();
 
-    QDomDocument doc;
-    doc.setContent(discogsResponse);
+	QDomDocument doc;
+	doc.setContent(discogsResponse);
 	QDomElement release = doc.firstChild().firstChild().toElement();
 
 
@@ -34,12 +34,12 @@ void DiscogsAlbumModel::setAlbum(const QString& discogsResponse)
 	m_albumArtists = trackArtists(release.firstChildElement("artists")).join(joinText);
 
 
-    QDomNodeList trackList = release.elementsByTagName("track");
-    for(int i = 0; i < trackList.size(); ++i)
-    {
-        QDomElement track = trackList.at(i).toElement();
-        if(track.isNull())
-            continue;
+	QDomNodeList trackList = release.elementsByTagName("track");
+	for(int i = 0; i < trackList.size(); ++i)
+	{
+		QDomElement track = trackList.at(i).toElement();
+		if(track.isNull())
+			continue;
 
 		QDomElement artists = track.firstChildElement("artists");
 		m_tracks << Track(track.firstChildElement("position").text(),
@@ -170,11 +170,17 @@ void DiscogsAlbumModel::removeItem(const QModelIndex &index)
 }
 
 
-void DiscogsAlbumModel::joinItems(const QModelIndex& from, const QModelIndex& to)
+void DiscogsAlbumModel::joinItems(const QModelIndexList& list)
 {
-	Q_UNUSED(from);
-	Q_UNUSED(to);
-// TODO.
+	Q_ASSERT(list.count() > 2);
+
+	for(int i = 1; i < list.count(); ++i)
+		m_tracks[list.first().row()].joinWith(m_tracks.at(list.at(i).row()));
+
+	for(int i = list.count()-1; i >= 1; --i)
+		m_tracks.removeAt(list.at(i).row());
+
+	reset();
 }
 
 // Fix method name.
