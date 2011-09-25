@@ -1,35 +1,28 @@
-#-------------------------------------------------
-#
-# Project created by QtCreator 2011-06-24T21:43:01
-#
-#-------------------------------------------------
+TEMPLATE=	app
 
-QT		+= core gui network xml
+TARGET	=	discogs-tagger
 
-TARGET	= discogs-tagger
-TEMPLATE= app
+QT		+=	core gui network xml
 
-
-SOURCES	+= main.cpp\
+SOURCES	+=	main.cpp\
 			mainwindow.cpp \
 			trackmodel.cpp \
 			discogsviewer.cpp \
 			discogsalbumlistmodel.cpp \
-    discogsalbummodel.cpp \
-    searchedit.cpp
+			discogsalbummodel.cpp \
+			searchedit.cpp
 
-HEADERS	+= mainwindow.h \
+HEADERS	+=	mainwindow.h \
 			trackmodel.h \
 			discogsviewer.h \
 			discogsalbumlistmodel.h \
-    discogsalbummodel.h \
-    structs.h \
-    searchedit.h
+			discogsalbummodel.h \
+			structs.h \
+			searchedit.h
 
-FORMS	+= mainwindow.ui \
+FORMS	+=	mainwindow.ui \
 			discogsviewer.ui
 
 LIBS	+= -ltag
 
-RESOURCES += \
-    resources.qrc
+RESOURCES += resources.qrc

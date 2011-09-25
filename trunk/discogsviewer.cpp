@@ -18,7 +18,7 @@ const QString DiscogsViewer::albumRequest =
 DiscogsViewer::DiscogsViewer(QWidget *parent)
 	: QWidget(parent)
 {
-    setupUi(this);
+	setupUi(this);
 
 	splitter->setCollapsible(1, false);
 
@@ -31,10 +31,10 @@ DiscogsViewer::DiscogsViewer(QWidget *parent)
 	m_albumTable->verticalHeader()->setResizeMode(QHeaderView::Fixed);
 	m_albumTable->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
 
-    manager = new QNetworkAccessManager(this);
+	manager = new QNetworkAccessManager(this);
 
 	// Manually connecting signals.
-    connect(manager, SIGNAL(finished(QNetworkReply*)),
+	connect(manager, SIGNAL(finished(QNetworkReply*)),
 			SLOT(replyFinished(QNetworkReply*)));
 	connect(m_albumList, SIGNAL(activated(QModelIndex)),
 			SLOT(albumDoubleClicked(QModelIndex)));
@@ -78,7 +78,7 @@ void DiscogsViewer::search(const QString& input)
 void DiscogsViewer::loadAlbumList(const QString &text)
 {
 	QUrl url = QUrl(albumListRequest.arg(text));
-    manager->get(QNetworkRequest(url));
+	manager->get(QNetworkRequest(url));
 	qDebug() << url;
 	emit statusChanged(tr("Loading album list"));
 }
@@ -87,7 +87,7 @@ void DiscogsViewer::loadAlbumList(const QString &text)
 void DiscogsViewer::loadAlbum(int releaseNumber)
 {
 	QUrl u = QUrl(albumRequest.arg(releaseNumber));
-    manager->get(QNetworkRequest(u));
+	manager->get(QNetworkRequest(u));
 	qDebug() << u;
 	emit statusChanged(tr("Loading album"));
 }
@@ -97,10 +97,10 @@ void DiscogsViewer::loadAlbum(int releaseNumber)
 void DiscogsViewer::replyFinished(QNetworkReply *reply)
 {
 	emit statusChanged();
-    if(reply->error() == QNetworkReply::NoError)
-    {
-        QByteArray bytes = reply->readAll();
-        QString string(QString::fromUtf8(bytes));
+	if(reply->error() == QNetworkReply::NoError)
+	{
+		QByteArray bytes = reply->readAll();
+		QString string(QString::fromUtf8(bytes));
 
 
 		QDomDocument doc;
@@ -120,12 +120,12 @@ void DiscogsViewer::replyFinished(QNetworkReply *reply)
 				qWarning() << "UNKNOWN RESPONSE";
 			qDebug() << string;
 		}
-    }
-    else
-    {
-        // TODO: handle errors here
-        qDebug() << "error";
-    }
+	}
+	else
+	{
+		// TODO: handle errors here
+		qDebug() << "error";
+	}
 }
 
 
@@ -159,10 +159,10 @@ void DiscogsViewer::moveDown()
 void DiscogsViewer::join()
 {
 	// TODO.
-//	if(m_albumTable->selectionModel()->selectedRows(0).size() < 2)
-//		return;
-//	else
-//		m_tableModel->joinItems();
+	if(m_albumTable->selectionModel()->selectedRows(0).size() < 2)
+		return;
+	else
+		m_tableModel->joinItems(m_albumTable->selectionModel()->selectedRows(0));
 }
 
 
