@@ -10,7 +10,8 @@ SOURCES	+=	main.cpp\
 			discogsviewer.cpp \
 			discogsalbumlistmodel.cpp \
 			discogsalbummodel.cpp \
-			searchedit.cpp
+			searchedit.cpp \
+			structs.cpp
 
 HEADERS	+=	mainwindow.h \
 			trackmodel.h \
