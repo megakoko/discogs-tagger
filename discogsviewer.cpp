@@ -62,12 +62,12 @@ QByteArray DiscogsViewer::saveState() const
 void DiscogsViewer::search(const QString& input)
 {
 	QString text = input.simplified();
-	qDebug() << text;
+//	qDebug() << text;
 	if(text.isEmpty())
 		return;
 
 	const int releaseNumber = DiscogsAlbumListModel::releaseNumberFromUrl(text);
-	qDebug() << releaseNumber;
+//	qDebug() << releaseNumber;
 	if(releaseNumber != DiscogsAlbumListModel::NO_RELEASE_NUMBER)
 		loadAlbum(releaseNumber);
 	else
@@ -118,13 +118,13 @@ void DiscogsViewer::replyFinished(QNetworkReply *reply)
 				m_tableModel->setAlbum(string);
 			else
 				qWarning() << "UNKNOWN RESPONSE";
-			qDebug() << string;
+//			qDebug() << string;
 		}
 	}
 	else
 	{
 		// TODO: handle errors here
-		qDebug() << "error";
+		qWarning() << "error";
 	}
 }
 

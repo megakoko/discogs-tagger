@@ -98,23 +98,31 @@ QVariant DiscogsAlbumModel::data(const QModelIndex &index, int role) const
 
 QVariant DiscogsAlbumModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-	if(orientation == Qt::Vertical || role != Qt::DisplayRole)
+	if(role != Qt::DisplayRole)
 		return QAbstractTableModel::headerData(section, orientation, role);
 
-	switch(section)
+	if(orientation == Qt::Horizontal)
 	{
-	case 0:
-		return tr("Artist");
-		break;
-	case 1:
-		return tr("Title");
-		break;
-	case 2:
-		return tr("Album");
-		break;
+		switch(section)
+		{
+		case 0:
+			return tr("Artist");
+			break;
+		case 1:
+			return tr("Title");
+			break;
+		case 2:
+			return tr("Album");
+			break;
+		}
+
+		return QVariant();
+	}
+	else
+	{
+		return m_tracks.at(section).position;
 	}
 
-	return QVariant();
 }
 
 
