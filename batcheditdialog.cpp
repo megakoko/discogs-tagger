@@ -1,7 +1,7 @@
-#include "batchchangedialog.h"
+#include "batcheditdialog.h"
 
 
-BatchChangeDialog::BatchChangeDialog(QWidget *parent)
+BatchEditDialog::BatchEditDialog(QWidget *parent)
 	: QDialog(parent)
 {
 	setupUi(this);
@@ -10,7 +10,7 @@ BatchChangeDialog::BatchChangeDialog(QWidget *parent)
 }
 
 
-void BatchChangeDialog::init()
+void BatchEditDialog::init()
 {
 	connect(m_ok, SIGNAL(clicked()), SLOT(accept()));
 	connect(m_cancel, SIGNAL(clicked()), SLOT(reject()));
@@ -34,7 +34,7 @@ void BatchChangeDialog::init()
 //}
 
 
-QVariant BatchChangeDialog::enteredValue() const
+QVariant BatchEditDialog::enteredValue() const
 {
 	return m_value->text();
 }

@@ -7,7 +7,6 @@
 
 #include "discogsalbumlistmodel.h"
 #include "discogsalbummodel.h"
-#include "batchchangedialog.h"
 
 
 const QString DiscogsViewer::albumListRequest =

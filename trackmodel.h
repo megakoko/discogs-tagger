@@ -7,6 +7,7 @@
 #include <taglib/fileref.h>
 
 #include "structs.h"
+#include "trackmodelfields.h"
 
 //typedef QSharedPointer<TagLib::FileRef> Track;
 
@@ -15,16 +16,6 @@ class TrackModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-	enum {
-		colTrack,
-		colTitle,
-		colArtist,
-		colAlbum,
-		colGenre,
-		colYear,
-		colLastElement
-	};
-
     explicit TrackModel(QObject *parent = 0);
 
 	// Overloaded methods.

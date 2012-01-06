@@ -18,7 +18,7 @@ SOURCES	+=	main.cpp\
 			discogsalbummodel.cpp \
 			searchedit.cpp \
 			structs.cpp \
-			batchchangedialog.cpp
+			batcheditdialog.cpp
 
 HEADERS	+=	mainwindow.h \
 			trackmodel.h \
@@ -27,11 +27,12 @@ HEADERS	+=	mainwindow.h \
 			discogsalbummodel.h \
 			structs.h \
 			searchedit.h \
-			batchchangedialog.h
+			batcheditdialog.h \
+			trackmodelfields.h
 
 FORMS	+=	mainwindow.ui \
 			discogsviewer.ui \
-			batchchangedialog.ui
+			batcheditdialog.ui
 
 LIBS	+= -ltag
 
