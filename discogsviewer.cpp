@@ -33,8 +33,8 @@ DiscogsViewer::DiscogsViewer(QWidget *parent)
 
 	QHeaderView* hor = m_albumTable->horizontalHeader();
 	hor->setResizeMode(QHeaderView::Stretch);
-	hor->setResizeMode(DiscogsAlbumModelFields::Year, QHeaderView::ResizeToContents);
-	hor->setResizeMode(DiscogsAlbumModelFields::Position, QHeaderView::ResizeToContents);
+	hor->setResizeMode(DiscogsAlbumModel::Year, QHeaderView::ResizeToContents);
+	hor->setResizeMode(DiscogsAlbumModel::Position, QHeaderView::ResizeToContents);
 
 	manager = new QNetworkAccessManager(this);
 

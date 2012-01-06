@@ -8,9 +8,6 @@
 #include <QStringList>
 
 
-using DiscogsAlbumModelFields::Field;
-
-
 DiscogsAlbumModel::DiscogsAlbumModel(QObject* parent)
 	: QAbstractTableModel(parent)
 {
@@ -70,7 +67,6 @@ QVariant DiscogsAlbumModel::data(const QModelIndex &index, int role) const
 	const int row = index.row();
 	switch(role)
 	{
-	using namespace DiscogsAlbumModelFields;
 	case Qt::DisplayRole:
 		switch(index.column())
 		{
@@ -99,7 +95,6 @@ QVariant DiscogsAlbumModel::headerData(int section, Qt::Orientation orientation,
 {
 	if(orientation == Qt::Horizontal && role == Qt::DisplayRole)
 	{
-		using namespace DiscogsAlbumModelFields;
 		switch(section)
 		{
 		case Position:
@@ -131,9 +126,8 @@ int DiscogsAlbumModel::rowCount(const QModelIndex &) const
 
 int DiscogsAlbumModel::columnCount(const QModelIndex &) const
 {
-	return DiscogsAlbumModelFields::LastItem;
+	return LastItem;
 }
-
 
 
 void DiscogsAlbumModel::moveUp(const QModelIndex& item)
@@ -185,32 +179,6 @@ void DiscogsAlbumModel::joinItems(const QModelIndexList& list)
 	for(int i = list.count()-1; i >= 1; --i)
 		m_tracks.removeAt(list.at(i).row());
 
-	reset();
-}
-
-
-void DiscogsAlbumModel::changeItems(const QModelIndexList& list, Field column,
-									const QVariant& value)
-{
-	for(int i = 0; i < list.count(); ++i)
-	{
-		using namespace DiscogsAlbumModelFields;
-		Track& track = m_tracks[list[i].row()];
-		switch(column)
-		{
-		case Artist:
-			track.artist = value.toString();
-			break;
-		case Album:
-			track.album = value.toString();
-			break;
-		case Title:
-			track.title = value.toString();
-			break;
-		default:
-			qCritical() << "Unhandled option in" << __FILE__ << __FUNCTION__;
-		}
-	}
 	reset();
 }
 

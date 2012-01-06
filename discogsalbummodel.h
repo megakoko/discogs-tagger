@@ -2,7 +2,6 @@
 
 #include <QAbstractTableModel>
 #include "structs.h"
-#include "discogsalbummodelfields.h"
 
 class QDomElement;
 
@@ -11,6 +10,16 @@ class DiscogsAlbumModel : public QAbstractTableModel
 {
 	Q_OBJECT
 public:
+	enum Field {
+		Position,
+		Title,
+		Artist,
+		Album,
+		Genre,
+		Year,
+		LastItem
+	};
+
 	explicit DiscogsAlbumModel(QObject* parent = 0);
 
 	void setAlbum(const QString& discogsResponse);
@@ -27,8 +36,6 @@ public slots:
 	void moveDown(const QModelIndex& item);
 	void removeItem(const QModelIndex& item);
 	void joinItems(const QModelIndexList& list);
-	void changeItems(const QModelIndexList& list, DiscogsAlbumModelFields::Field column,
-					 const QVariant& value);
 
 private:
 	QStringList trackArtists(const QDomElement& track) const;

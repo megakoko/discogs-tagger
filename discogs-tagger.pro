@@ -27,8 +27,7 @@ HEADERS	+=	mainwindow.h \
 			discogsalbummodel.h \
 			structs.h \
 			searchedit.h \
-			batchchangedialog.h \
-			discogsalbummodelfields.h
+			batchchangedialog.h
 
 FORMS	+=	mainwindow.ui \
 			discogsviewer.ui \
