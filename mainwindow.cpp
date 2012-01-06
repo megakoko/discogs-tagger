@@ -101,6 +101,10 @@ void MainWindow::initConnections()
 	action->setStatusTip(tr("Save changes") + actionShortcutToString(action));
 	m_filesActions << action;
 
+//	action = m_toolBar->addAction(QIcon(), "Batch change", m_discogsViewer, SLOT(batchChange()));
+//	action->setStatusTip(tr("Batch change track tags"));
+//	m_filesAction << action;
+
 
 	// Discogs View actions.
 	action = m_toolBar->addAction(QIcon(":/icons/left"), tr("Go to Files View"), this, SLOT(goToFilesPage()));
@@ -130,10 +134,6 @@ void MainWindow::initConnections()
 
 	action = m_toolBar->addAction(QIcon(":/icons/add"), QString::null, m_discogsViewer, SLOT(join()));
 	action->setStatusTip(tr("Join tracks") + actionShortcutToString(action));
-	m_discogsActions << action;
-
-	action = m_toolBar->addAction(QIcon(), "Batch change", m_discogsViewer, SLOT(batchChange()));
-	action->setStatusTip(tr("Batch change track tags"));
 	m_discogsActions << action;
 
 
@@ -203,12 +203,7 @@ void MainWindow::addFiles()
 
 void MainWindow::importDiscogsTagsToModel()
 {
-	const QString& album = m_discogsViewer->albumModel()->album();
-	const QList<Track>& tracks = m_discogsViewer->albumModel()->trackList();
-	const QString& genre = m_discogsViewer->albumModel()->genre();
-	const int year = m_discogsViewer->albumModel()->year();
-
-	m_model->importTags(tracks, album, genre, year);
+	m_model->importTags(m_discogsViewer->albumModel()->trackList());
 }
 
 

@@ -29,9 +29,9 @@ void DiscogsAlbumModel::setAlbum(const QString& discogsResponse)
 
 	const QString joinText(" feat. ");
 
-	m_album = release.firstChildElement("title").text();
-	m_year  = release.firstChildElement("released").text().left(4).toInt();
-	m_genres= genres(release.firstChildElement("genres")).join(", ");
+	const QString& album = release.firstChildElement("title").text();
+	const int year  = release.firstChildElement("released").text().left(4).toInt();
+	const QString& genres = getGenres(release.firstChildElement("genres")).join(", ");
 
 
 	m_albumArtists = trackArtists(release.firstChildElement("artists")).join(joinText);
@@ -47,7 +47,10 @@ void DiscogsAlbumModel::setAlbum(const QString& discogsResponse)
 		QDomElement artists = track.firstChildElement("artists");
 		m_tracks << Track(track.firstChildElement("position").text(),
 						  trackArtists(artists).join(joinText),
-						  track.firstChildElement("title").text());
+						  track.firstChildElement("title").text(),
+						  album,
+						  genres,
+						  year);
 	}
 	// TODO:
 	reset();
@@ -60,24 +63,6 @@ QList<Track> DiscogsAlbumModel::trackList() const
 }
 
 
-const QString& DiscogsAlbumModel::album() const
-{
-	return m_album;
-}
-
-
-const QString& DiscogsAlbumModel::genre() const
-{
-	return m_genres;
-}
-
-
-int DiscogsAlbumModel::year() const
-{
-	return m_year;
-}
-
-
 QVariant DiscogsAlbumModel::data(const QModelIndex &index, int role) const
 {
 	Q_ASSERT(index.row() < m_tracks.size());
@@ -87,13 +72,23 @@ QVariant DiscogsAlbumModel::data(const QModelIndex &index, int role) const
 	{
 	using namespace DiscogsAlbumModelFields;
 	case Qt::DisplayRole:
-		if(index.column() == Artist)
+		switch(index.column())
+		{
+		case Position:
+			return m_tracks[row].position;
+		case Artist:
 			return m_tracks[row].artist;
-		else if(index.column() == Title)
+		case Title:
 			return m_tracks[row].title;
-		else if(index.column() == Album)
-			return m_album;
-		break;
+		case Album:
+			return m_tracks[row].album;
+		case Year:
+			return m_tracks[row].year;
+		case Genre:
+			return m_tracks[row].genre;
+		default:
+			qCritical() << "Unhandled option in" << __FILE__ << __FUNCTION__;
+		}
 	}
 
 	return QVariant();
@@ -102,32 +97,29 @@ QVariant DiscogsAlbumModel::data(const QModelIndex &index, int role) const
 
 QVariant DiscogsAlbumModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-	if(role != Qt::DisplayRole)
-		return QAbstractTableModel::headerData(section, orientation, role);
-
-	if(orientation == Qt::Horizontal)
+	if(orientation == Qt::Horizontal && role == Qt::DisplayRole)
 	{
 		using namespace DiscogsAlbumModelFields;
 		switch(section)
 		{
+		case Position:
+			return "#";
 		case Artist:
 			return tr("Artist");
-			break;
 		case Title:
 			return tr("Title");
-			break;
 		case Album:
 			return tr("Album");
-			break;
+		case Year:
+			return tr("Year");
+		case Genre:
+			return tr("Genre");
+		default:
+			qCritical() << "Unhandled option in" << __FILE__ << __FUNCTION__;
 		}
-
-		return QVariant();
-	}
-	else
-	{
-		return m_tracks.at(section).position;
 	}
 
+	return QAbstractTableModel::headerData(section, orientation, role);
 }
 
 
@@ -210,7 +202,7 @@ void DiscogsAlbumModel::changeItems(const QModelIndexList& list, Field column,
 			track.artist = value.toString();
 			break;
 		case Album:
-			m_album = value.toString();
+			track.album = value.toString();
 			break;
 		case Title:
 			track.title = value.toString();
@@ -259,7 +251,7 @@ QStringList DiscogsAlbumModel::trackArtists(const QDomElement &track) const
 }
 
 
-QStringList DiscogsAlbumModel::genres(const QDomElement& genres) const
+QStringList DiscogsAlbumModel::getGenres(const QDomElement& genres) const
 {
 	QStringList result;
 

@@ -31,7 +31,6 @@ public slots:
 	void moveDown();
 	void join();
 	void remove();
-	void batchChange();
 
 private slots:
     void replyFinished(QNetworkReply*);

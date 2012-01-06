@@ -30,7 +30,11 @@ DiscogsViewer::DiscogsViewer(QWidget *parent)
 	m_tableModel = new DiscogsAlbumModel(this);
 	m_albumTable->setModel(m_tableModel);
 	m_albumTable->verticalHeader()->setResizeMode(QHeaderView::Fixed);
-	m_albumTable->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+
+	QHeaderView* hor = m_albumTable->horizontalHeader();
+	hor->setResizeMode(QHeaderView::Stretch);
+	hor->setResizeMode(DiscogsAlbumModelFields::Year, QHeaderView::ResizeToContents);
+	hor->setResizeMode(DiscogsAlbumModelFields::Position, QHeaderView::ResizeToContents);
 
 	manager = new QNetworkAccessManager(this);
 
@@ -173,19 +177,4 @@ void DiscogsViewer::remove()
 		return;
 	else
 		m_tableModel->removeItem(m_albumTable->selectionModel()->currentIndex());
-}
-
-
-void DiscogsViewer::batchChange()
-{
-	if (m_albumTable->selectionModel()->selectedRows(0).size() >= 2)
-	{
-		BatchChangeDialog dialog(this);
-		if(dialog.exec() == QDialog::Accepted)
-		{
-			m_tableModel->changeItems(m_albumTable->selectionModel()->selectedRows(),
-									  dialog.selectedField(),
-									  dialog.enteredValue());
-		}
-	}
 }
