@@ -15,6 +15,7 @@
 #include "discogsalbummodel.h"
 #include "discogsviewer.h"
 #include "searchedit.h"
+#include "batcheditdialog.h"
 
 
 namespace OptionsNames {
@@ -101,9 +102,9 @@ void MainWindow::initConnections()
 	action->setStatusTip(tr("Save changes") + actionShortcutToString(action));
 	m_filesActions << action;
 
-//	action = m_toolBar->addAction(QIcon(), "Batch change", m_discogsViewer, SLOT(batchChange()));
-//	action->setStatusTip(tr("Batch change track tags"));
-//	m_filesAction << action;
+	action = m_toolBar->addAction(QIcon(), "Batch change", this, SLOT(batchChange()));
+	action->setStatusTip(tr("Batch change track tags"));
+	m_filesActions << action;
 
 
 	// Discogs View actions.
@@ -177,8 +178,8 @@ void MainWindow::updateTable()
 	QHeaderView* h = m_mainTable->horizontalHeader();
 
 	h->setResizeMode(QHeaderView::Stretch);
-	h->setResizeMode(TrackModel::colTrack, QHeaderView::ResizeToContents);
-	h->setResizeMode(TrackModel::colYear, QHeaderView::ResizeToContents);
+	h->setResizeMode(TrackModelFields::Track, QHeaderView::ResizeToContents);
+	h->setResizeMode(TrackModelFields::Year, QHeaderView::ResizeToContents);
 	m_mainTable->verticalHeader()->setResizeMode(QHeaderView::Fixed);
 }
 
@@ -247,9 +248,9 @@ void MainWindow::goToDiscogsPage()
 	{
 		const int currentRow = m_mainTable->currentIndex().row();
 		const QString& text =
-			m_model->data(m_model->index(currentRow, TrackModel::colAlbum)).toString() +
+			m_model->data(m_model->index(currentRow, TrackModelFields::Album)).toString() +
 			' ' +
-			m_model->data(m_model->index(currentRow, TrackModel::colArtist)).toString();
+			m_model->data(m_model->index(currentRow, TrackModelFields::Artist)).toString();
 		m_searchLine->setText(text);
 	}
 
@@ -263,6 +264,11 @@ void MainWindow::save()
 		m_statusBar->showMessage(tr("Some of the tracks were not saved"), 5000);
 }
 
+
+void MainWindow::batchEdit()
+{
+
+}
 
 
 QString MainWindow::actionShortcutToString(const QAction* action)

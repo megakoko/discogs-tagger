@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>BatchChangeDialog</class>
- <widget class="QDialog" name="BatchChangeDialog">
+ <class>BatchEditDialog</class>
+ <widget class="QDialog" name="BatchEditDialog">
   <property name="geometry">
    <rect>
     <x>0</x>

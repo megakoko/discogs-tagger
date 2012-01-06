@@ -89,7 +89,7 @@ void TrackModel::clear()
 
 int TrackModel::columnCount(const QModelIndex &) const
 {
-	return colLastElement;
+	return TrackModelFields::LastElement;
 }
 
 
@@ -112,7 +112,7 @@ QVariant TrackModel::data(const QModelIndex &index, int role) const
 	switch(role)
 	{
 	case Qt::SizeHintRole:
-		if(col == colTrack || col == colYear)
+		if(col == TrackModelFields::Track || col == TrackModelFields::Year)
 		{
 			const int spinWidth = 40;
 			const int textWidth = qApp->fontMetrics().width(data(index).toString());
@@ -122,27 +122,27 @@ QVariant TrackModel::data(const QModelIndex &index, int role) const
 	case Qt::ForegroundRole:
 		switch(col)
 		{
-		case colTrack:
+		case TrackModelFields::Track:
 			if(m_tracks[row]->tag()->track() == m_tracksOriginal[row]->tag()->track())
 				return QVariant();
 			return QBrush(diffColor);
-		case colTitle:
+		case TrackModelFields::Title:
 			if(m_tracks[row]->tag()->title() == m_tracksOriginal[row]->tag()->title())
 				return QVariant();
 			return QBrush(diffColor);
-		case colArtist:
+		case TrackModelFields::Artist:
 			if(m_tracks[row]->tag()->artist() == m_tracksOriginal[row]->tag()->artist())
 				return QVariant();
 			return QBrush(diffColor);
-		case colAlbum:
+		case TrackModelFields::Album:
 			if(m_tracks[row]->tag()->album() == m_tracksOriginal[row]->tag()->album())
 				return QVariant();
 			return QBrush(diffColor);
-		case colGenre:
+		case TrackModelFields::Genre:
 			if(m_tracks[row]->tag()->genre() == m_tracksOriginal[row]->tag()->genre())
 				return QVariant();
 			return QBrush(diffColor);
-		case colYear:
+		case TrackModelFields::Year:
 			if(m_tracks[row]->tag()->year() == m_tracksOriginal[row]->tag()->year())
 				return QVariant();
 			return QBrush(diffColor);
@@ -154,17 +154,17 @@ QVariant TrackModel::data(const QModelIndex &index, int role) const
 	case Qt::EditRole:
 		switch(col)
 		{
-		case colTrack:
+		case TrackModelFields::Track:
 			return m_tracks[row]->tag()->track();
-		case colTitle:
+		case TrackModelFields::Title:
 			return TStringToQString(m_tracks[row]->tag()->title());
-		case colArtist:
+		case TrackModelFields::Artist:
 			return TStringToQString(m_tracks[row]->tag()->artist());
-		case colAlbum:
+		case TrackModelFields::Album:
 			return TStringToQString(m_tracks[row]->tag()->album());
-		case colGenre:
+		case TrackModelFields::Genre:
 			return TStringToQString(m_tracks[row]->tag()->genre());
-		case colYear:
+		case TrackModelFields::Year:
 			return m_tracks[row]->tag()->year();
 		}
 		break;
@@ -177,27 +177,27 @@ QVariant TrackModel::data(const QModelIndex &index, int role) const
 		// TODO: we don't need no file name here.
 		switch(col)
 		{
-		case colTrack:
+		case TrackModelFields::Track:
 			if(m_tracks[row]->tag()->track() == m_tracksOriginal[row]->tag()->track())
 				return QVariant();
 			return toolTip.arg(m_tracksOriginal[row]->tag()->track());
-		case colTitle:
+		case TrackModelFields::Title:
 			if(m_tracks[row]->tag()->title() == m_tracksOriginal[row]->tag()->title())
 				return QVariant();
 			return toolTip.arg(TStringToQString(m_tracksOriginal[row]->tag()->title()));
-		case colArtist:
+		case TrackModelFields::Artist:
 			if(m_tracks[row]->tag()->artist() == m_tracksOriginal[row]->tag()->artist())
 				return QVariant();
 			return toolTip.arg(TStringToQString(m_tracksOriginal[row]->tag()->artist()));
-		case colAlbum:
+		case TrackModelFields::Album:
 			if(m_tracks[row]->tag()->album() == m_tracksOriginal[row]->tag()->album())
 				return QVariant();
 			return toolTip.arg(TStringToQString(m_tracksOriginal[row]->tag()->album()));
-		case colGenre:
+		case TrackModelFields::Genre:
 			if(m_tracks[row]->tag()->genre() == m_tracksOriginal[row]->tag()->genre())
 				return QVariant();
 			return toolTip.arg(TStringToQString(m_tracksOriginal[row]->tag()->genre()));
-		case colYear:
+		case TrackModelFields::Year:
 			if(m_tracks[row]->tag()->year() == m_tracksOriginal[row]->tag()->year())
 				return QVariant();
 			return toolTip.arg(m_tracksOriginal[row]->tag()->year());
@@ -217,17 +217,17 @@ QVariant TrackModel::headerData(int section, Qt::Orientation orientation, int ro
 
 	switch(section)
 	{
-	case colTrack:
+	case TrackModelFields::Track:
 		return "#";
-	case colTitle:
+	case TrackModelFields::Title:
 		return tr("Title");
-	case colArtist:
+	case TrackModelFields::Artist:
 		return tr("Artist");
-	case colAlbum:
+	case TrackModelFields::Album:
 		return tr("Album");
-	case colGenre:
+	case TrackModelFields::Genre:
 		return tr("Genre");
-	case colYear:
+	case TrackModelFields::Year:
 		return tr("Year");
 	}
 
@@ -254,22 +254,22 @@ bool TrackModel::setData(const QModelIndex &index, const QVariant &value, int ro
 		const int row = index.row();
 		switch(index.column())
 		{
-		case colTrack:
+		case TrackModelFields::Track:
 			m_tracks[row]->tag()->setTrack(value.toInt());
 			return true;
-		case colTitle:
+		case TrackModelFields::Title:
 			m_tracks[row]->tag()->setTitle(value.toString().toStdString());
 			return true;
-		case colArtist:
+		case TrackModelFields::Artist:
 			m_tracks[row]->tag()->setArtist(value.toString().toStdString());
 			return true;
-		case colAlbum:
+		case TrackModelFields::Album:
 			m_tracks[row]->tag()->setAlbum(value.toString().toStdString());
 			return true;
-		case colGenre:
+		case TrackModelFields::Genre:
 			m_tracks[row]->tag()->setGenre(value.toString().toStdString());
 			return true;
-		case colYear:
+		case TrackModelFields::Year:
 			m_tracks[row]->tag()->setYear(value.toInt());
 			return true;
 		}

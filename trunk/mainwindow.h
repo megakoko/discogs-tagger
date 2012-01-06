@@ -35,6 +35,7 @@ private slots:
 	void search();
 
 	void save();
+	void batchEdit();
 
 	void help();
 
