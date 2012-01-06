@@ -128,11 +128,13 @@ void MainWindow::initConnections()
 	action->setStatusTip(tr("Remove track") + actionShortcutToString(action));
 	m_discogsActions << action;
 
-
 	action = m_toolBar->addAction(QIcon(":/icons/add"), QString::null, m_discogsViewer, SLOT(join()));
 	action->setStatusTip(tr("Join tracks") + actionShortcutToString(action));
 	m_discogsActions << action;
 
+	action = m_toolBar->addAction(QIcon(), "Batch change", m_discogsViewer, SLOT(batchChange()));
+	action->setStatusTip(tr("Batch change track tags"));
+	m_discogsActions << action;
 
 
 	// Hack to add a spacer to QToolBar.
@@ -305,4 +307,5 @@ void MainWindow::dropEvent(QDropEvent *event)
 
 	m_model->addTracks(files);
 	updateTable();
+	goToFilesPage();
 }

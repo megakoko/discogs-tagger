@@ -2,6 +2,7 @@
 
 #include <QAbstractTableModel>
 #include "structs.h"
+#include "discogsalbummodelfields.h"
 
 class QDomElement;
 
@@ -24,13 +25,13 @@ public:
 	int rowCount(const QModelIndex& parent) const;
 	int columnCount(const QModelIndex& parent) const;
 
-
 public slots:
 	void moveUp(const QModelIndex& item);
 	void moveDown(const QModelIndex& item);
 	void removeItem(const QModelIndex& item);
 	void joinItems(const QModelIndexList& list);
-
+	void changeItems(const QModelIndexList& list, DiscogsAlbumModelFields::Field column,
+					 const QVariant& value);
 
 private:
 	QStringList trackArtists(const QDomElement& track) const;

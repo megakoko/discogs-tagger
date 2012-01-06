@@ -8,6 +8,9 @@
 #include <QStringList>
 
 
+using DiscogsAlbumModelFields::Field;
+
+
 DiscogsAlbumModel::DiscogsAlbumModel(QObject* parent)
 	: QAbstractTableModel(parent)
 {
@@ -82,12 +85,13 @@ QVariant DiscogsAlbumModel::data(const QModelIndex &index, int role) const
 	const int row = index.row();
 	switch(role)
 	{
+	using namespace DiscogsAlbumModelFields;
 	case Qt::DisplayRole:
-		if(index.column() == 0)
+		if(index.column() == Artist)
 			return m_tracks[row].artist;
-		else if(index.column() == 1)
+		else if(index.column() == Title)
 			return m_tracks[row].title;
-		else if(index.column() == 2)
+		else if(index.column() == Album)
 			return m_album;
 		break;
 	}
@@ -103,15 +107,16 @@ QVariant DiscogsAlbumModel::headerData(int section, Qt::Orientation orientation,
 
 	if(orientation == Qt::Horizontal)
 	{
+		using namespace DiscogsAlbumModelFields;
 		switch(section)
 		{
-		case 0:
+		case Artist:
 			return tr("Artist");
 			break;
-		case 1:
+		case Title:
 			return tr("Title");
 			break;
-		case 2:
+		case Album:
 			return tr("Album");
 			break;
 		}
@@ -134,7 +139,7 @@ int DiscogsAlbumModel::rowCount(const QModelIndex &) const
 
 int DiscogsAlbumModel::columnCount(const QModelIndex &) const
 {
-	return 3;
+	return DiscogsAlbumModelFields::LastItem;
 }
 
 
@@ -190,6 +195,33 @@ void DiscogsAlbumModel::joinItems(const QModelIndexList& list)
 
 	reset();
 }
+
+
+void DiscogsAlbumModel::changeItems(const QModelIndexList& list, Field column,
+									const QVariant& value)
+{
+	for(int i = 0; i < list.count(); ++i)
+	{
+		using namespace DiscogsAlbumModelFields;
+		Track& track = m_tracks[list[i].row()];
+		switch(column)
+		{
+		case Artist:
+			track.artist = value.toString();
+			break;
+		case Album:
+			m_album = value.toString();
+			break;
+		case Title:
+			track.title = value.toString();
+			break;
+		default:
+			qCritical() << "Unhandled option in" << __FILE__ << __FUNCTION__;
+		}
+	}
+	reset();
+}
+
 
 // Fix method name.
 QStringList DiscogsAlbumModel::trackArtists(const QDomElement &track) const
