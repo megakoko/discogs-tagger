@@ -3,9 +3,12 @@
 namespace DiscogsAlbumModelFields
 {
 enum Field {
-	Artist = 0,
+	Position,
 	Title,
+	Artist,
 	Album,
+	Genre,
+	Year,
 	LastItem
 };
 }

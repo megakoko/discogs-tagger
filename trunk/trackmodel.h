@@ -39,12 +39,9 @@ public:
 	// Specific methods.
 	void addTrack(const QString& filename);
 	void addTracks(const QStringList& filenames);
-	void importTags(const QList<Track>& tracks, const QString& album,
-					const QString& genre, const int year);
-signals:
+	void importTags(const QList<Track>& tracks);
 
 public slots:
-	// We probably need two QModelIndex arguments here.
 	bool saveTracks();
 
 	void clear();

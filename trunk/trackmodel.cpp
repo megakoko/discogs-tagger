@@ -61,18 +61,17 @@ bool TrackModel::saveTracks()
 }
 
 
-void TrackModel::importTags(const QList<Track> &tracks, const QString &album,
-							const QString &genre, const int year)
+void TrackModel::importTags(const QList<Track>& tracks)
 {
 	const int maxIndex = qMin(tracks.count(), m_tracks.count());
 	for(int i = 0; i < maxIndex; ++i)
 	{
 		TagLib::Tag* tag = m_tracks[i]->tag();
-		tag->setAlbum(album.toStdString());
+		tag->setAlbum(tracks[i].album.toStdString());
 		tag->setTitle(tracks[i].title.toStdString());
 		tag->setArtist(tracks[i].artist.toStdString());
-		tag->setGenre(genre.toStdString());
-		tag->setYear(year);
+		tag->setGenre(tracks[i].genre.toStdString());
+		tag->setYear(tracks[i].year);
 		tag->setTrack(i+1);
 //		TagLib::Tag::duplicate(tag, m_tracksOriginal[i]->tag());
 	}

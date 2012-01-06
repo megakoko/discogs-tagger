@@ -15,9 +15,6 @@ public:
 
 	void setAlbum(const QString& discogsResponse);
 	QList<Track> trackList() const;
-	const QString& album() const;
-	int year() const;
-	const QString& genre() const;
 
 	QVariant data(const QModelIndex& index, int role) const;
 	QVariant headerData(int section, Qt::Orientation orientation, int role) const;
@@ -35,14 +32,11 @@ public slots:
 
 private:
 	QStringList trackArtists(const QDomElement& track) const;
-	QStringList genres(const QDomElement& genre) const;
+	QStringList getGenres(const QDomElement& genre) const;
 
 	QString moveTheArticleToStart(const QString& text) const;
 
-	QString m_album;
 	QString m_albumArtists;
-	int m_year;
-	QString m_genres;
 
 	QList<Track> m_tracks;
 
