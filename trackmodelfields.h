@@ -3,7 +3,7 @@
 namespace TrackModelFields
 {
 enum Field {
-	Track,
+	Position,
 	Title,
 	Artist,
 	Album,

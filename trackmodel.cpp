@@ -109,10 +109,11 @@ QVariant TrackModel::data(const QModelIndex &index, int role) const
 
 	QColor diffColor(Qt::red);
 
+	using namespace TrackModelFields;
 	switch(role)
 	{
 	case Qt::SizeHintRole:
-		if(col == TrackModelFields::Track || col == TrackModelFields::Year)
+		if(col == Position || col == Year)
 		{
 			const int spinWidth = 40;
 			const int textWidth = qApp->fontMetrics().width(data(index).toString());
@@ -122,27 +123,27 @@ QVariant TrackModel::data(const QModelIndex &index, int role) const
 	case Qt::ForegroundRole:
 		switch(col)
 		{
-		case TrackModelFields::Track:
+		case Position:
 			if(m_tracks[row]->tag()->track() == m_tracksOriginal[row]->tag()->track())
 				return QVariant();
 			return QBrush(diffColor);
-		case TrackModelFields::Title:
+		case Title:
 			if(m_tracks[row]->tag()->title() == m_tracksOriginal[row]->tag()->title())
 				return QVariant();
 			return QBrush(diffColor);
-		case TrackModelFields::Artist:
+		case Artist:
 			if(m_tracks[row]->tag()->artist() == m_tracksOriginal[row]->tag()->artist())
 				return QVariant();
 			return QBrush(diffColor);
-		case TrackModelFields::Album:
+		case Album:
 			if(m_tracks[row]->tag()->album() == m_tracksOriginal[row]->tag()->album())
 				return QVariant();
 			return QBrush(diffColor);
-		case TrackModelFields::Genre:
+		case Genre:
 			if(m_tracks[row]->tag()->genre() == m_tracksOriginal[row]->tag()->genre())
 				return QVariant();
 			return QBrush(diffColor);
-		case TrackModelFields::Year:
+		case Year:
 			if(m_tracks[row]->tag()->year() == m_tracksOriginal[row]->tag()->year())
 				return QVariant();
 			return QBrush(diffColor);
@@ -154,17 +155,17 @@ QVariant TrackModel::data(const QModelIndex &index, int role) const
 	case Qt::EditRole:
 		switch(col)
 		{
-		case TrackModelFields::Track:
+		case Position:
 			return m_tracks[row]->tag()->track();
-		case TrackModelFields::Title:
+		case Title:
 			return TStringToQString(m_tracks[row]->tag()->title());
-		case TrackModelFields::Artist:
+		case Artist:
 			return TStringToQString(m_tracks[row]->tag()->artist());
-		case TrackModelFields::Album:
+		case Album:
 			return TStringToQString(m_tracks[row]->tag()->album());
-		case TrackModelFields::Genre:
+		case Genre:
 			return TStringToQString(m_tracks[row]->tag()->genre());
-		case TrackModelFields::Year:
+		case Year:
 			return m_tracks[row]->tag()->year();
 		}
 		break;
@@ -177,27 +178,27 @@ QVariant TrackModel::data(const QModelIndex &index, int role) const
 		// TODO: we don't need no file name here.
 		switch(col)
 		{
-		case TrackModelFields::Track:
+		case Position:
 			if(m_tracks[row]->tag()->track() == m_tracksOriginal[row]->tag()->track())
 				return QVariant();
 			return toolTip.arg(m_tracksOriginal[row]->tag()->track());
-		case TrackModelFields::Title:
+		case Title:
 			if(m_tracks[row]->tag()->title() == m_tracksOriginal[row]->tag()->title())
 				return QVariant();
 			return toolTip.arg(TStringToQString(m_tracksOriginal[row]->tag()->title()));
-		case TrackModelFields::Artist:
+		case Artist:
 			if(m_tracks[row]->tag()->artist() == m_tracksOriginal[row]->tag()->artist())
 				return QVariant();
 			return toolTip.arg(TStringToQString(m_tracksOriginal[row]->tag()->artist()));
-		case TrackModelFields::Album:
+		case Album:
 			if(m_tracks[row]->tag()->album() == m_tracksOriginal[row]->tag()->album())
 				return QVariant();
 			return toolTip.arg(TStringToQString(m_tracksOriginal[row]->tag()->album()));
-		case TrackModelFields::Genre:
+		case Genre:
 			if(m_tracks[row]->tag()->genre() == m_tracksOriginal[row]->tag()->genre())
 				return QVariant();
 			return toolTip.arg(TStringToQString(m_tracksOriginal[row]->tag()->genre()));
-		case TrackModelFields::Year:
+		case Year:
 			if(m_tracks[row]->tag()->year() == m_tracksOriginal[row]->tag()->year())
 				return QVariant();
 			return toolTip.arg(m_tracksOriginal[row]->tag()->year());
@@ -215,19 +216,20 @@ QVariant TrackModel::headerData(int section, Qt::Orientation orientation, int ro
 	if(orientation == Qt::Vertical || role != Qt::DisplayRole)
 		return QAbstractTableModel::headerData(section, orientation, role);
 
+	using namespace TrackModelFields;
 	switch(section)
 	{
-	case TrackModelFields::Track:
+	case Position:
 		return "#";
-	case TrackModelFields::Title:
+	case Title:
 		return tr("Title");
-	case TrackModelFields::Artist:
+	case Artist:
 		return tr("Artist");
-	case TrackModelFields::Album:
+	case Album:
 		return tr("Album");
-	case TrackModelFields::Genre:
+	case Genre:
 		return tr("Genre");
-	case TrackModelFields::Year:
+	case Year:
 		return tr("Year");
 	}
 
@@ -252,27 +254,62 @@ bool TrackModel::setData(const QModelIndex &index, const QVariant &value, int ro
 	{
 		// TODO: maybe check QVariant to int or string convertion?
 		const int row = index.row();
+		using namespace TrackModelFields;
 		switch(index.column())
 		{
-		case TrackModelFields::Track:
+		case Position:
 			m_tracks[row]->tag()->setTrack(value.toInt());
 			return true;
-		case TrackModelFields::Title:
+		case Title:
 			m_tracks[row]->tag()->setTitle(value.toString().toStdString());
 			return true;
-		case TrackModelFields::Artist:
+		case Artist:
 			m_tracks[row]->tag()->setArtist(value.toString().toStdString());
 			return true;
-		case TrackModelFields::Album:
+		case Album:
 			m_tracks[row]->tag()->setAlbum(value.toString().toStdString());
 			return true;
-		case TrackModelFields::Genre:
+		case Genre:
 			m_tracks[row]->tag()->setGenre(value.toString().toStdString());
 			return true;
-		case TrackModelFields::Year:
+		case Year:
 			m_tracks[row]->tag()->setYear(value.toInt());
 			return true;
 		}
 	}
 	return false;
+}
+
+
+void TrackModel::batchEdit(const QModelIndexList& indexes, TrackModelFields::Field field,
+						   const QVariant& value)
+{
+	for(int i = 0; i < indexes.count(); ++i)
+	{
+		TagLib::Tag* tag = m_tracks[indexes.at(i).row()]->tag();
+		using namespace TrackModelFields;
+		switch(field)
+		{
+		case Position:
+			tag->setTrack(value.toInt());
+			break;
+		case Title:
+			tag->setTitle(value.toString().toStdString());
+			break;
+		case Artist:
+			tag->setArtist(value.toString().toStdString());
+			break;
+		case Album:
+			tag->setAlbum(value.toString().toStdString());
+			break;
+		case Genre:
+			tag->setGenre(value.toString().toStdString());
+			break;
+		case Year:
+			tag->setYear(value.toInt());
+			break;
+		default:
+			qCritical() << "Unhandled option in" << __FILE__ << __FUNCTION__;
+		}
+	}
 }

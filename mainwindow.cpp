@@ -102,8 +102,8 @@ void MainWindow::initConnections()
 	action->setStatusTip(tr("Save changes") + actionShortcutToString(action));
 	m_filesActions << action;
 
-	action = m_toolBar->addAction(QIcon(), "Batch change", this, SLOT(batchChange()));
-	action->setStatusTip(tr("Batch change track tags"));
+	action = m_toolBar->addAction(QIcon(":/icons/batch-edit"), "Batch edit", this, SLOT(batchEdit()));
+	action->setStatusTip(tr("Batch edit track tags"));
 	m_filesActions << action;
 
 
@@ -178,7 +178,7 @@ void MainWindow::updateTable()
 	QHeaderView* h = m_mainTable->horizontalHeader();
 
 	h->setResizeMode(QHeaderView::Stretch);
-	h->setResizeMode(TrackModelFields::Track, QHeaderView::ResizeToContents);
+	h->setResizeMode(TrackModelFields::Position, QHeaderView::ResizeToContents);
 	h->setResizeMode(TrackModelFields::Year, QHeaderView::ResizeToContents);
 	m_mainTable->verticalHeader()->setResizeMode(QHeaderView::Fixed);
 }
@@ -267,7 +267,13 @@ void MainWindow::save()
 
 void MainWindow::batchEdit()
 {
-
+	const QModelIndexList& selectedIndexes = m_mainTable->selectionModel()->selectedRows(0);
+	if(selectedIndexes.count() > 0)
+	{
+		BatchEditDialog d(this);
+		if(d.exec() == QDialog::Accepted)
+			m_model->batchEdit(selectedIndexes, d.selectedField(), d.enteredValue());
+	}
 }
 
 
