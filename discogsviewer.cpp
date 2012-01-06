@@ -7,6 +7,7 @@
 
 #include "discogsalbumlistmodel.h"
 #include "discogsalbummodel.h"
+#include "batchchangedialog.h"
 
 
 const QString DiscogsViewer::albumListRequest =
@@ -172,4 +173,19 @@ void DiscogsViewer::remove()
 		return;
 	else
 		m_tableModel->removeItem(m_albumTable->selectionModel()->currentIndex());
+}
+
+
+void DiscogsViewer::batchChange()
+{
+	if (m_albumTable->selectionModel()->selectedRows(0).size() >= 2)
+	{
+		BatchChangeDialog dialog(this);
+		if(dialog.exec() == QDialog::Accepted)
+		{
+			m_tableModel->changeItems(m_albumTable->selectionModel()->selectedRows(),
+									  dialog.selectedField(),
+									  dialog.enteredValue());
+		}
+	}
 }
