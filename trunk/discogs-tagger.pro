@@ -4,6 +4,12 @@ TARGET	=	discogs-tagger
 
 QT		+=	core gui network xml
 
+DESTDIR 	=	bin
+OBJECTS_DIR	=	bin/objects
+UI_DIR		=	bin/ui
+MOC_DIR		=	bin/moc
+RCC_DIR		=	bin/rcc
+
 SOURCES	+=	main.cpp\
 			mainwindow.cpp \
 			trackmodel.cpp \
