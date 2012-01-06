@@ -10,5 +10,6 @@
         <file alias="import">faenza-icons/media-import-audio-cd.png</file>
         <file alias="preferences">faenza-icons/system-run.png</file>
         <file alias="remove">faenza-icons/window-close.png</file>
+        <file alias="batch-edit">faenza-icons/view-list-details-symbolic.png</file>
     </qresource>
 </RCC>

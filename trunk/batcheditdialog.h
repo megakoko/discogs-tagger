@@ -1,6 +1,8 @@
 #pragma once
 
 #include "ui_batcheditdialog.h"
+#include "trackmodelfields.h"
+
 
 class BatchEditDialog : public QDialog, private Ui::BatchEditDialog
 {
@@ -9,13 +11,12 @@ class BatchEditDialog : public QDialog, private Ui::BatchEditDialog
 public:
 	explicit BatchEditDialog(QWidget *parent = 0);
 
-//	DiscogsAlbumModelFields::Field selectedField() const;
+	TrackModelFields::Field selectedField() const;
 	QVariant enteredValue() const;
-
 
 private:
 	void init();
 
-//	void addField(const QString& fieldName, DiscogsAlbumModelFields::Field field);
+	void addField(const QString& fieldName, TrackModelFields::Field field);
 
 };

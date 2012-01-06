@@ -32,6 +32,9 @@ public:
 	void addTracks(const QStringList& filenames);
 	void importTags(const QList<Track>& tracks);
 
+	void batchEdit(const QModelIndexList& indexes, TrackModelFields::Field field,
+				   const QVariant& value);
+
 public slots:
 	bool saveTracks();
 
