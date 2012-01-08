@@ -3,7 +3,6 @@
 #include <QDebug>
 #include <QDomDocument>
 #include <QDomElement>
-#include <QDate>
 #include <QRegExp>
 #include <QStringList>
 
@@ -17,6 +16,8 @@ DiscogsAlbumModel::DiscogsAlbumModel(QObject* parent)
 
 void DiscogsAlbumModel::setAlbum(const QString& discogsResponse)
 {
+	beginResetModel();
+
 	m_tracks.clear();
 
 	QDomDocument doc;
@@ -48,9 +49,10 @@ void DiscogsAlbumModel::setAlbum(const QString& discogsResponse)
 						  album,
 						  genres,
 						  year);
+
 	}
-	// TODO:
-	reset();
+
+	endResetModel();
 }
 
 
@@ -64,6 +66,8 @@ QVariant DiscogsAlbumModel::data(const QModelIndex &index, int role) const
 {
 	Q_ASSERT(index.row() < m_tracks.size());
 
+	QVariant result;
+
 	const int row = index.row();
 	switch(role)
 	{
@@ -71,50 +75,66 @@ QVariant DiscogsAlbumModel::data(const QModelIndex &index, int role) const
 		switch(index.column())
 		{
 		case Position:
-			return m_tracks[row].position;
+			result = m_tracks[row].position;
+			break;
 		case Artist:
-			return m_tracks[row].artist;
+			result = m_tracks[row].artist;
+			break;
 		case Title:
-			return m_tracks[row].title;
+			result = m_tracks[row].title;
+			break;
 		case Album:
-			return m_tracks[row].album;
+			result = m_tracks[row].album;
+			break;
 		case Year:
-			return m_tracks[row].year;
+			result = m_tracks[row].year;
+			break;
 		case Genre:
-			return m_tracks[row].genre;
+			result = m_tracks[row].genre;
+			break;
 		default:
 			qCritical() << "Unhandled option in" << __FILE__ << __FUNCTION__;
 		}
 	}
 
-	return QVariant();
+	return result;
 }
 
 
 QVariant DiscogsAlbumModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
+	QVariant result;
+
 	if(orientation == Qt::Horizontal && role == Qt::DisplayRole)
 	{
 		switch(section)
 		{
 		case Position:
-			return "#";
+			result = "#";
+			break;
 		case Artist:
-			return tr("Artist");
+			result = tr("Artist");
+			break;
 		case Title:
-			return tr("Title");
+			result = tr("Title");
+			break;
 		case Album:
-			return tr("Album");
+			result = tr("Album");
+			break;
 		case Year:
-			return tr("Year");
+			result = tr("Year");
+			break;
 		case Genre:
-			return tr("Genre");
+			result = tr("Genre");
+			break;
 		default:
 			qCritical() << "Unhandled option in" << __FILE__ << __FUNCTION__;
 		}
 	}
+	else
+		result = QAbstractTableModel::headerData(section, orientation, role);
 
-	return QAbstractTableModel::headerData(section, orientation, role);
+	return result;
 }
 
 
@@ -133,39 +153,39 @@ int DiscogsAlbumModel::columnCount(const QModelIndex &) const
 void DiscogsAlbumModel::moveUp(const QModelIndex& item)
 {
 	const int row = item.row();
-	if(row == 0)
-		return;
-
-	beginMoveRows(item.parent(), row, row, item.parent(), row-1);
-	m_tracks.swap(row, row-1);
-	endMoveRows();
+	if(row > 0)
+	{
+		beginMoveRows(item.parent(), row, row, item.parent(), row-1);
+		m_tracks.swap(row, row-1);
+		endMoveRows();
+	}
 }
 
 
 void DiscogsAlbumModel::moveDown(const QModelIndex& item)
 {
 	const int row = item.row();
-	if(row == m_tracks.size()-1)
-		return;
-
-	// 'row+2' is an index of element, which will be
-	// 'parent' (i.e. will appear after) of the element with index 'row'.
-	beginMoveRows(item.parent(), row, row, item.parent(), row+2);
-	m_tracks.swap(row, row+1);
-	endMoveRows();
+	if(row <= m_tracks.size()-1)
+	{
+		// 'row+2' is an index of element, which will be
+		// 'parent' (i.e. will appear after) of the element with index 'row'.
+		beginMoveRows(item.parent(), row, row, item.parent(), row+2);
+		m_tracks.swap(row, row+1);
+		endMoveRows();
+	}
 }
 
 
 void DiscogsAlbumModel::removeItem(const QModelIndex &index)
 {
-	if(!index.isValid())
-		return;
+	if(index.isValid())
+	{
+		const int row = index.row();
 
-	const int row = index.row();
-
-	beginRemoveRows(index.parent(), row, row);
-	m_tracks.removeAt(row);
-	endRemoveRows();
+		beginRemoveRows(index.parent(), row, row);
+		m_tracks.removeAt(row);
+		endRemoveRows();
+	}
 }
 
 
@@ -173,13 +193,15 @@ void DiscogsAlbumModel::joinItems(const QModelIndexList& list)
 {
 	Q_ASSERT(list.count() > 2);
 
+	beginResetModel();
+
 	for(int i = 1; i < list.count(); ++i)
 		m_tracks[list.first().row()].joinWith(m_tracks.at(list.at(i).row()));
 
 	for(int i = list.count()-1; i >= 1; --i)
 		m_tracks.removeAt(list.at(i).row());
 
-	reset();
+	endResetModel();
 }
 
 

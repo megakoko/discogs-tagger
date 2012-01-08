@@ -6,10 +6,8 @@
 
 #include <taglib/fileref.h>
 
-#include "structs.h"
+#include "track.h"
 #include "trackmodelfields.h"
-
-//typedef QSharedPointer<TagLib::FileRef> Track;
 
 
 class TrackModel : public QAbstractTableModel
@@ -28,7 +26,6 @@ public:
 	bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
 
 	// Specific methods.
-	void addTrack(const QString& filename);
 	void addTracks(const QStringList& filenames);
 	void importTags(const QList<Track>& tracks);
 

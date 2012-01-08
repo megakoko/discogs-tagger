@@ -1,4 +1,4 @@
-#include "structs.h"
+#include "track.h"
 
 #include <QString>
 #include <QStringList>

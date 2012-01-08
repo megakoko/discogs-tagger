@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QAbstractTableModel>
-#include "structs.h"
+#include "track.h"
 
 class QDomElement;
 

@@ -17,7 +17,7 @@ SOURCES	+=	main.cpp\
 			discogsalbumlistmodel.cpp \
 			discogsalbummodel.cpp \
 			searchedit.cpp \
-			structs.cpp \
+			track.cpp \
 			batcheditdialog.cpp \
 			filesviewer.cpp
 
@@ -26,7 +26,7 @@ HEADERS	+=	mainwindow.h \
 			discogsviewer.h \
 			discogsalbumlistmodel.h \
 			discogsalbummodel.h \
-			structs.h \
+			track.h \
 			searchedit.h \
 			batcheditdialog.h \
 			trackmodelfields.h \

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ui_discogsviewer.h"
-#include "structs.h"
+#include "track.h"
 
 class QDomElement;
 
@@ -39,14 +39,13 @@ private slots:
 	void albumDoubleClicked(const QModelIndex& index);
 
 private:
-
 	void loadAlbumList(const QString& text);
 	void loadAlbum(int releaseNumber);
 
     void handleXML(QString &str);
 
+	QString handleTrack(const QDomElement& track) const;
 
-    QString handleTrack(const QDomElement& track) const;
     QNetworkAccessManager* manager;
 
 	DiscogsAlbumListModel* m_listModel;
@@ -56,7 +55,7 @@ private:
 	static const QString albumRequest;
 
 signals:
-	void statusChanged(const QString& status = QString::null);
+	void statusChanged(const QString& status, int timeout = 5000);
 
 };
 
