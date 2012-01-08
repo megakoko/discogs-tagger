@@ -9,23 +9,18 @@
 
 class TrackModel;
 class QDir;
+class FilesViewer;
 class DiscogsViewer;
 
 
 class MainWindow : public QMainWindow, Ui_MainWindow
 {
 	Q_OBJECT
-
 public:
 	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();
 
-protected:
-	void dragEnterEvent(QDragEnterEvent *);
-	void dropEvent(QDropEvent *);
-
 private slots:
-	void addFiles();
 	void importDiscogsTagsToModel();
 	void currentPageChanged(const int index);
 
@@ -33,33 +28,23 @@ private slots:
 	void goToDiscogsPage();
 
 	void search();
-
-	void save();
-	void batchEdit();
-
 	void help();
-
 
 private:
 	void init();
+	void initToolBar();
 	void initConnections();
 
-	void findFiles(const QDir& dir, QStringList& files);
-	void updateTable();
-
 	static QString actionShortcutToString(const QAction* action);
-
-	// Start directory for 'Open Directory' or 'Open File' dialog.
-	QString m_startDir;
-
-	TrackModel* m_model;
 
 	QSettings m_settings;
 
 	QLineEdit* m_searchLine;
 
+	FilesViewer* m_filesViewer;
 	DiscogsViewer* m_discogsViewer;
 
 	QList<QAction*> m_filesActions;
 	QList<QAction*> m_discogsActions;
+
 };

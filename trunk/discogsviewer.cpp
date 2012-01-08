@@ -45,12 +45,6 @@ DiscogsViewer::DiscogsViewer(QWidget *parent)
 }
 
 
-const DiscogsAlbumModel* DiscogsViewer::albumModel() const
-{
-	return m_tableModel;
-}
-
-
 void DiscogsViewer::restoreState(const QByteArray& state)
 {
 	splitter->restoreState(state);
@@ -76,6 +70,12 @@ void DiscogsViewer::search(const QString& input)
 		loadAlbum(releaseNumber);
 	else
 		loadAlbumList(text.replace(' ', '+'));
+}
+
+
+QList<Track> DiscogsViewer::trackList() const
+{
+	return m_tableModel->trackList();
 }
 
 
