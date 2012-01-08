@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ui_discogsviewer.h"
+#include "structs.h"
 
 class QDomElement;
 
@@ -19,12 +20,13 @@ class DiscogsViewer : public QWidget, Ui::DiscogsViewer
 
 public:
     explicit DiscogsViewer(QWidget *parent = 0);
-	const DiscogsAlbumModel* albumModel() const;
 
 	void search(const QString& input);
 
 	void restoreState(const QByteArray& state);
 	QByteArray saveState() const;
+
+	QList<Track> trackList() const;
 
 public slots:
 	void moveUp();

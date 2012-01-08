@@ -33,12 +33,19 @@ void TrackModel::addTrack(const QString& filename)
 void TrackModel::addTracks(const QStringList &filenames)
 {
 	using TagLib::FileRef;
-	beginInsertRows(QModelIndex(),m_tracks.count(), m_tracks.count() + filenames.size() - 1);
+
+	int countOfAddedTracks = 0;
 	foreach(const QString& filename, filenames)
 	{
-		m_tracks << QSharedPointer<FileRef>(new FileRef(filename.toUtf8().data()));
-		m_tracksOriginal << QSharedPointer<FileRef>(new FileRef(filename.toUtf8().data()));
+		QSharedPointer<FileRef> track (new FileRef(filename.toUtf8().data()));
+		if(!track->isNull())
+		{
+			++countOfAddedTracks;
+			m_tracks << track;
+			m_tracksOriginal << QSharedPointer<FileRef>(new FileRef(filename.toUtf8().data()));
+		}
 	}
+	beginInsertRows(QModelIndex(), m_tracks.count(), m_tracks.count() + countOfAddedTracks - 1);
 	endInsertRows();
 }
 

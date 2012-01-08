@@ -18,7 +18,8 @@ SOURCES	+=	main.cpp\
 			discogsalbummodel.cpp \
 			searchedit.cpp \
 			structs.cpp \
-			batcheditdialog.cpp
+			batcheditdialog.cpp \
+			filesviewer.cpp
 
 HEADERS	+=	mainwindow.h \
 			trackmodel.h \
@@ -28,11 +29,13 @@ HEADERS	+=	mainwindow.h \
 			structs.h \
 			searchedit.h \
 			batcheditdialog.h \
-			trackmodelfields.h
+			trackmodelfields.h \
+			filesviewer.h
 
 FORMS	+=	mainwindow.ui \
 			discogsviewer.ui \
-			batcheditdialog.ui
+			batcheditdialog.ui \
+			filesviewer.ui
 
 LIBS	+= -ltag
 
