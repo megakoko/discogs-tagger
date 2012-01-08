@@ -21,16 +21,20 @@ QVariant DiscogsAlbumListModel::data(const QModelIndex& index, int role) const
 {
 	Q_ASSERT(index.row() < m_albums.count());
 
+	QVariant result;
+
 	const int& row = index.row();
 	switch(role)
 	{
 	case Qt::DisplayRole:
-		return m_albums[row].title;
+		result = m_albums[row].title;
+		break;
 	case Qt::UserRole:
-		return m_albums[row].url;
+		result = m_albums[row].url;
+		break;
 	}
 
-	return QVariant();
+	return result;
 }
 
 
@@ -42,6 +46,7 @@ int DiscogsAlbumListModel::rowCount(const QModelIndex&) const
 
 void DiscogsAlbumListModel::setAlbums(const QString& discogsResponse)
 {
+	beginResetModel();
 	m_albums.clear();
 
     QDomDocument doc;
@@ -57,8 +62,7 @@ void DiscogsAlbumListModel::setAlbums(const QString& discogsResponse)
 		m_albums << Album(result.firstChildElement("title").text().remove('\n'),
 						  result.firstChildElement("uri").text());
 	}
-	// TODO:
-	reset();
+	endResetModel();
 }
 
 
@@ -71,9 +75,7 @@ int DiscogsAlbumListModel::releaseNumberFromUrl(const QString& url)
 	int releaseNumber = NO_RELEASE_NUMBER;
 
 	if(rx.indexIn(url) >= 0)
-	{
 		releaseNumber = rx.capturedTexts().last().toInt();
-	}
 
 	return releaseNumber;
 }

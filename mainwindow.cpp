@@ -155,8 +155,8 @@ void MainWindow::initToolBar()
 
 void MainWindow::initConnections()
 {
-	connect(m_discogsViewer, SIGNAL(statusChanged(QString)),
-			m_statusBar, SLOT(showMessage(QString)));
+	connect(m_discogsViewer, SIGNAL(statusChanged(QString,int)),
+			m_statusBar, SLOT(showMessage(QString,int)));
 	connect(m_stackedWidget, SIGNAL(currentChanged(int)), SLOT(currentPageChanged(int)));
 	connect(m_searchLine, SIGNAL(returnPressed()), SLOT(search()));
 	connect(m_filesViewer, SIGNAL(sendMessage(QString,int)),
@@ -202,10 +202,11 @@ void MainWindow::goToDiscogsPage()
 
 QString MainWindow::actionShortcutToString(const QAction* action)
 {
-	if(action->shortcut().isEmpty())
-		return QString::null;
+	QString result;
+	if(!action->shortcut().isEmpty())
+		result = " (" + action->shortcut().toString(QKeySequence::NativeText) + ")";
 
-	return " (" + action->shortcut().toString(QKeySequence::NativeText) + ")";
+	return result;
 }
 
 

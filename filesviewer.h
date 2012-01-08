@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ui_filesviewer.h"
-#include "structs.h"
+#include "track.h"
 
 
 class TrackModel;
@@ -43,6 +43,6 @@ private:
 	QString m_startDir;
 
 signals:
-	void sendMessage(const QString& message, int timeout);
+	void sendMessage(const QString& message, int timeout = 5000);
 
 };

@@ -92,11 +92,7 @@ void FilesViewer::clear()
 
 void FilesViewer::findFiles(const QDir &dir, QStringList &files)
 {
-	QStringList nameFilter;
-//	nameFilter << "*.mp3" << "*.flac"; // TODO
-
-
-	const QStringList tmpFiles = dir.entryList(nameFilter, QDir::Files);
+	const QStringList tmpFiles = dir.entryList(QStringList(), QDir::Files);
 	foreach(const QString& file, tmpFiles)
 		files << dir.absoluteFilePath(file);
 
@@ -111,7 +107,7 @@ void FilesViewer::findFiles(const QDir &dir, QStringList &files)
 void FilesViewer::save()
 {
 	if(!m_model->saveTracks())
-		emit sendMessage(tr("Some of the tracks were not saved"), 5000);
+		emit sendMessage(tr("Some of the tracks were not saved"));
 }
 
 
@@ -149,7 +145,7 @@ void FilesViewer::dropEvent(QDropEvent *event)
 
 		if(info.isDir())
 			findFiles(QDir(info.filePath()), files);
-		else if(info.suffix().toLower() == "mp3")
+		else if(info.isFile())
 			files << info.filePath();
 	}
 

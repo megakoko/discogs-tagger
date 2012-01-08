@@ -1,9 +1,6 @@
 #include "batcheditdialog.h"
 
 
-using namespace TrackModelFields;
-
-
 BatchEditDialog::BatchEditDialog(QWidget *parent)
 	: QDialog(parent)
 {
@@ -19,6 +16,7 @@ void BatchEditDialog::init()
 	connect(m_ok, SIGNAL(clicked()), SLOT(accept()));
 	connect(m_cancel, SIGNAL(clicked()), SLOT(reject()));
 
+	using namespace TrackModelFields;
 	addField("Artist", Artist);
 	addField("Title", Title);
 	addField("Album", Album);
@@ -27,16 +25,16 @@ void BatchEditDialog::init()
 }
 
 
-void BatchEditDialog::addField(const QString &fieldName, Field field)
+void BatchEditDialog::addField(const QString &fieldName, TrackModelFields::Field field)
 {
 	m_fieldToChange->addItem(fieldName, field);
 }
 
 
-Field BatchEditDialog::selectedField() const
+TrackModelFields::Field BatchEditDialog::selectedField() const
 {
 	const QVariant& data = m_fieldToChange->itemData(m_fieldToChange->currentIndex());
-	return static_cast<Field>(data.toInt());
+	return static_cast<TrackModelFields::Field>(data.toInt());
 }
 
 

@@ -26,7 +26,7 @@ SearchEdit::SearchEdit(QWidget *parent)
 
 void SearchEdit::resizeEvent(QResizeEvent *)
 {
-    const QSize sz = clearButton->sizeHint();
+	const QSize& sz = clearButton->sizeHint();
     const int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
     clearButton->move(rect().right() - frameWidth - sz.width(),
                       (rect().bottom() + 1 - sz.height())/2);
