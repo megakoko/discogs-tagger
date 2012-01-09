@@ -32,10 +32,10 @@ public:
 	int columnCount(const QModelIndex& parent) const;
 
 public slots:
-	void moveUp(const QModelIndex& item);
-	void moveDown(const QModelIndex& item);
-	void removeItem(const QModelIndex& item);
-	void joinItems(const QModelIndexList& list);
+	void moveUp(const QModelIndexList& items);
+	void moveDown(const QModelIndexList& items);
+	void removeItem(const QModelIndexList& items);
+	void joinItems(const QModelIndexList& items);
 
 private:
 	QStringList trackArtists(const QDomElement& track) const;

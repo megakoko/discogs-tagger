@@ -46,6 +46,8 @@ private:
 
 	QString handleTrack(const QDomElement& track) const;
 
+	QModelIndexList selectedIndexes() const;
+
     QNetworkAccessManager* manager;
 
 	DiscogsAlbumListModel* m_listModel;

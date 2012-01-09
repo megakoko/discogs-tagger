@@ -150,56 +150,77 @@ int DiscogsAlbumModel::columnCount(const QModelIndex &) const
 }
 
 
-void DiscogsAlbumModel::moveUp(const QModelIndex& item)
+void DiscogsAlbumModel::moveUp(const QModelIndexList &items)
 {
-	const int row = item.row();
-	if(row > 0)
+	// Starting with the highest index in list.
+	for(int i = 0; i < items.count(); ++i)
 	{
-		beginMoveRows(item.parent(), row, row, item.parent(), row-1);
-		m_tracks.swap(row, row-1);
-		endMoveRows();
+		const QModelIndex& item = items.at(i);
+		const int row = item.row();
+
+		if(row == 0)
+			break;
+		else
+		{
+			beginMoveRows(item.parent(), row, row, item.parent(), row-1);
+			m_tracks.swap(row, row-1);
+			endMoveRows();
+		}
 	}
 }
 
 
-void DiscogsAlbumModel::moveDown(const QModelIndex& item)
+void DiscogsAlbumModel::moveDown(const QModelIndexList &items)
 {
-	const int row = item.row();
-	if(row <= m_tracks.size()-1)
+	// Starting with the lowest index in list.
+	for(int i = items.count()-1; i >= 0; --i)
 	{
-		// 'row+2' is an index of element, which will be
-		// 'parent' (i.e. will appear after) of the element with index 'row'.
-		beginMoveRows(item.parent(), row, row, item.parent(), row+2);
-		m_tracks.swap(row, row+1);
-		endMoveRows();
+		const QModelIndex& item = items.at(i);
+		const int row = item.row();
+
+		if(row == m_tracks.size()-1)
+			break;
+		else
+		{
+			// 'row+2' is an index of element, which will be
+			// 'parent' (i.e. will appear after) of the element with index 'row'.
+			beginMoveRows(item.parent(), row, row, item.parent(), row+2);
+			m_tracks.swap(row, row+1);
+			endMoveRows();
+		}
 	}
 }
 
 
-void DiscogsAlbumModel::removeItem(const QModelIndex &index)
+void DiscogsAlbumModel::removeItem(const QModelIndexList &items)
 {
-	if(index.isValid())
+	for(int i = items.count()-1; i >= 0; --i)
 	{
-		const int row = index.row();
+		const QModelIndex& item = items.at(i);
 
-		beginRemoveRows(index.parent(), row, row);
-		m_tracks.removeAt(row);
-		endRemoveRows();
+		if(item.isValid())
+		{
+			const int row = item.row();
+
+			beginRemoveRows(item.parent(), row, row);
+			m_tracks.removeAt(row);
+			endRemoveRows();
+		}
 	}
 }
 
 
-void DiscogsAlbumModel::joinItems(const QModelIndexList& list)
+void DiscogsAlbumModel::joinItems(const QModelIndexList& items)
 {
-	Q_ASSERT(list.count() > 2);
+	Q_ASSERT(items.count() > 2);
 
 	beginResetModel();
 
-	for(int i = 1; i < list.count(); ++i)
-		m_tracks[list.first().row()].joinWith(m_tracks.at(list.at(i).row()));
+	for(int i = 1; i < items.count(); ++i)
+		m_tracks[items.first().row()].joinWith(m_tracks.at(items.at(i).row()));
 
-	for(int i = list.count()-1; i >= 1; --i)
-		m_tracks.removeAt(list.at(i).row());
+	for(int i = items.count()-1; i >= 1; --i)
+		m_tracks.removeAt(items.at(i).row());
 
 	endResetModel();
 }
