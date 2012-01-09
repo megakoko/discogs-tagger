@@ -149,33 +149,31 @@ void DiscogsViewer::albumDoubleClicked(const QModelIndex &index)
 }
 
 
+QModelIndexList DiscogsViewer::selectedIndexes() const
+{
+	return m_albumTable->selectionModel()->selectedRows(0);
+}
+
+
 void DiscogsViewer::moveUp()
 {
-	const QModelIndexList& indexes = m_albumTable->selectionModel()->selectedRows(0);
-	if(indexes.size() == 1)
-		m_tableModel->moveUp(indexes.first());
+	m_tableModel->moveUp(selectedIndexes());
 }
 
 
 void DiscogsViewer::moveDown()
 {
-	const QModelIndexList& indexes = m_albumTable->selectionModel()->selectedRows(0);
-	if(indexes.size() == 1)
-		m_tableModel->moveDown(indexes.first());
+	m_tableModel->moveDown(selectedIndexes());
 }
 
 
 void DiscogsViewer::join()
 {
-	const QModelIndexList& indexes = m_albumTable->selectionModel()->selectedRows(0);
-	if(indexes.size() >= 2)
-		m_tableModel->joinItems(indexes);
+	m_tableModel->joinItems(selectedIndexes());
 }
 
 
 void DiscogsViewer::remove()
 {
-	const QModelIndexList& indexes = m_albumTable->selectionModel()->selectedRows(0);
-	if(indexes.size() == 1)
-		m_tableModel->removeItem(indexes.first());
+	m_tableModel->removeItem(selectedIndexes());
 }
