@@ -82,7 +82,7 @@ void MainWindow::initToolBar()
 	m_filesActions << action;
 
 	action = m_toolBar->addAction(QIcon(":/icons/add"), tr("Add files"), m_filesViewer, SLOT(addFiles()));
-	action->setShortcut(Qt::CTRL | Qt::Key_A);
+	action->setShortcut(Qt::CTRL | Qt::Key_O);
 	action->setStatusTip(tr("Open a dialog to find some audio tracks to add") + actionShortcutToString(action));
 	m_filesActions << action;
 
