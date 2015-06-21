@@ -31,12 +31,12 @@ DiscogsViewer::DiscogsViewer(QWidget *parent)
 	m_albumList->setModel(m_listModel);
 
 	m_albumTable->setModel(m_tableModel);
-	m_albumTable->verticalHeader()->setResizeMode(QHeaderView::Fixed);
+	m_albumTable->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 
 	QHeaderView* hor = m_albumTable->horizontalHeader();
-	hor->setResizeMode(QHeaderView::Stretch);
-	hor->setResizeMode(DiscogsAlbumModel::Year, QHeaderView::ResizeToContents);
-	hor->setResizeMode(DiscogsAlbumModel::Position, QHeaderView::ResizeToContents);
+	hor->setSectionResizeMode(QHeaderView::Stretch);
+	hor->setSectionResizeMode(DiscogsAlbumModel::Year, QHeaderView::ResizeToContents);
+	hor->setSectionResizeMode(DiscogsAlbumModel::Position, QHeaderView::ResizeToContents);
 
 	// Manually connecting signals.
 	connect(manager, SIGNAL(finished(QNetworkReply*)),

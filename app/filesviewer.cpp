@@ -6,6 +6,7 @@
 #include <QUrl>
 #include <QDragEnterEvent>
 #include <QDropEvent>
+#include <QMimeData>
 
 
 #include "trackmodel.h"
@@ -26,14 +27,14 @@ FilesViewer::FilesViewer(QWidget* parent)
 void FilesViewer::init()
 {
 	m_filesTable->setModel(m_model);
-	m_filesTable->horizontalHeader()->setMovable(true);
+	m_filesTable->horizontalHeader()->setSectionsMovable(true);
 
 	QHeaderView* h = m_filesTable->horizontalHeader();
-	h->setResizeMode(QHeaderView::Stretch);
-	h->setResizeMode(TrackModelFields::Position, QHeaderView::ResizeToContents);
-	h->setResizeMode(TrackModelFields::Year, QHeaderView::ResizeToContents);
+	h->setSectionResizeMode(QHeaderView::Stretch);
+	h->setSectionResizeMode(TrackModelFields::Position, QHeaderView::ResizeToContents);
+	h->setSectionResizeMode(TrackModelFields::Year, QHeaderView::ResizeToContents);
 
-	m_filesTable->verticalHeader()->setResizeMode(QHeaderView::Fixed);
+	m_filesTable->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 }
 
 
@@ -141,7 +142,7 @@ void FilesViewer::dropEvent(QDropEvent *event)
 	QStringList files;
 	foreach(const QUrl& url, event->mimeData()->urls())
 	{
-		const QFileInfo& info(url.toString().remove("file://"));
+		const QFileInfo info(url.toLocalFile());
 
 		if(info.isDir())
 			findFiles(QDir(info.filePath()), files);

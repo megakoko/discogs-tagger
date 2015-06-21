@@ -2,7 +2,7 @@ TEMPLATE=	app
 
 TARGET	=	discogs-tagger
 
-QT		+=	core gui network xml
+QT		+=	core gui widgets network xml
 
 DESTDIR 	=	bin
 OBJECTS_DIR	=	bin/objects
