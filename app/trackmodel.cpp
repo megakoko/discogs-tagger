@@ -7,7 +7,7 @@
 #include <QFontMetrics>
 
 #include <taglib/tag.h>
-#include <taglib/tstring.h>
+#include <taglib/toolkit/tstring.h>
 
 using TagLib::FileRef;
 
@@ -106,7 +106,7 @@ QVariant TrackModel::data(const QModelIndex &index, int role) const
 	Q_ASSERT(m_tracks.count() > index.row());
 
 	const int col = index.column();
-	static const QBrush diffBrush(QColor(Qt::red));
+	static const QBrush diffBrush = QBrush(QColor(Qt::red));
 
 	const TagLib::Tag* const tag = m_tracks[index.row()]->tag();
 	const TagLib::Tag* const tagOriginal = m_tracksOriginal[index.row()]->tag();

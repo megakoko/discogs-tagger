@@ -37,6 +37,11 @@ FORMS	+=	mainwindow.ui \
 			batcheditdialog.ui \
 			filesviewer.ui
 
-LIBS	+= -ltag
+LIBS	+= -lTagLib -L../taglib
+
+DEFINES += TAGLIB_NO_CONFIG
+INCLUDEPATH += ..
+INCLUDEPATH += ../taglib
+INCLUDEPATH += ../taglib/toolkit
 
 RESOURCES += resources.qrc
